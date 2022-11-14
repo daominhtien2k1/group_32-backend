@@ -4,8 +4,8 @@
   "description": "",
   "main": "./src/app.js",
   "scripts": {
-    "start": "node server.js",
-    "start:dev": "nodemon server.js",
+    "start": "node ./src/app.js",
+    "start:dev": "nodemon ./src/app.js",
     "migrateDB": "npx sequelize-cli db:migrate --config=config/config.cjs",
     "seedDB": "npx sequelize-cli db:seed:all --config=config/config.cjs",
     "dropDB": "npx sequelize-cli db:drop --config=config/config.cjs"
