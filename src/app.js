@@ -7,12 +7,14 @@ dotenv.config();
 import db from '../models/index.cjs';
 
 import authRouter from './modules/auth/auth.route.js';
+import userRoute from './modules/user/user.route.js';
 
 app.use(morgan('dev'));
 app.use(cors());
 app.use(json());
 
 app.use('/api/auth', authRouter);
+app.use('/api/user', userRoute);
 
 app.use((err, req, res, next) => {
     res.status(err.status || 500).send(err.message);

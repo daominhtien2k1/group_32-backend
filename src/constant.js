@@ -1,3 +1,5 @@
+import { Sequelize } from "sequelize";
+const Op = Sequelize.Op;
 export const HttpStatus = {
     OK: 200,
     BAD_REQUEST: 400,
@@ -16,3 +18,25 @@ export const HttpStatus = {
 };
 
 export const MIN_PASSWORD_CHARACTER = 6;
+export const UserRole = {
+    ADMIN: 'admin',
+    STUDENT: 'student',
+}
+export const UserStatus = {
+    REGISTERING: 'registering',
+    ACTIVE: 'active',
+    INACTIVE: 'inactive',
+}
+export const TokenType = {
+    REGISTER: 'register',
+    ACCESS: 'access',
+    REFRESH: 'refresh',
+    ACTIVE_EMAIL: 'active_email',
+    RESET_PASSWORD: 'reset_password',
+}
+
+export const softDeleteCondition = {
+    deletedAt: {
+        [Op.ne]: null
+    }
+}

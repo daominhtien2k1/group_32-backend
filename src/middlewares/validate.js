@@ -12,9 +12,10 @@ const validate = (schema) => (req, res, next) => {
         }
         result = schema.body.validate(req.body);
         if (result.error) {
-            res.status(HttpStatus.BAD_REQUEST).send(new ErrorResponse(HttpStatus.BAD_REQUEST, result.error));
+            res.status(HttpStatus.BAD_REQUEST).send(new ErrorResponse(HttpStatus.BAD_REQUEST, result.error.details));
+        } else {
+            next();
         }
-        next();
     } catch (error) {
         res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, error.message));
     }
