@@ -2,7 +2,7 @@ import Jwt from "jsonwebtoken";
 import ErrorResponse from '../utils/ErrorResponse.js';
 import { HttpStatus } from "../constant.js";
 
-const auth = async (req, res, next) => {
+export const auth = async (req, res, next) => {
     try {
         let token;
         if (req.headers.authorization && req.headers.authorization.split(' ')[0] == 'Bearer') {
@@ -14,12 +14,11 @@ const auth = async (req, res, next) => {
                 return res.status(HttpStatus.UNAUTHORIZED).json(new ErrorResponse(HttpStatus.UNAUTHORIZED, 'Unauthorized'));
             } else {
                 req.body.userId = authData.userId;
+                req.body.role = authData.role;
                 next();
             }
         })
     } catch (error) {
-        return res.json(new ErrorResponse(HttpStatus.UNAUTHORIZED, 'Unauthorized'));
+        return res.status(HttpStatus.UNAUTHORIZED).json(new ErrorResponse(HttpStatus.UNAUTHORIZED, 'Unauthorized'));
     }
 }
-
-export default auth;
