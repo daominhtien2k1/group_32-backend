@@ -8,7 +8,8 @@
     "start:dev": "nodemon ./src/app.js",
     "migrateDB": "npx sequelize-cli db:migrate --config=config/config.cjs",
     "seedDB": "npx sequelize-cli db:seed:all --config=config/config.cjs",
-    "dropDB": "npx sequelize-cli db:drop --config=config/config.cjs"
+    "dropDB": "npx sequelize-cli db:drop --config=config/config.cjs",
+    "migrateUndoDB": "npx sequelize-cli db:migrate:undo --config=config/config.cjs"
   },
   "author": "",
   "type": "module",

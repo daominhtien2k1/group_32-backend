@@ -3,15 +3,23 @@
 const { hashString } = require("../src/middlewares/bcrypt.cjs");
 
 module.exports = (sequelize, DataTypes) => {
-   const Building = sequelize.define(
-      "Building",
+   const Room = sequelize.define(
+      "Room",
       {
          name: {
             type: DataTypes.STRING,
             allowNull: false,
          },
-         address: {
-            type: DataTypes.STRING,
+         buildingId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+         },
+         capacity: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+         },
+         price: {
+            type: DataTypes.INTEGER,
             allowNull: false,
          },
       },
@@ -21,8 +29,8 @@ module.exports = (sequelize, DataTypes) => {
          timestamps: true,
       }
    );
-   Building.associate = function (models) {
+   Room.associate = function (models) {
       // associations can be defined here
    };
-   return Building;
+   return Room;
 };

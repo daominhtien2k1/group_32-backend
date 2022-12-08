@@ -41,6 +41,7 @@ const getBuildingById = async (req, res, next) => {
  */
 const createBuilding = async (req, res) => {
    try {
+      console.log(req.body);
       const newBuilding = await buildingService.createBuilding(req.body);
       res.status(HttpStatus.OK).send(new SuccessResponse(newBuilding.id));
    } catch (error) {
@@ -59,11 +60,11 @@ const createBuilding = async (req, res) => {
  */
 const updateBuilding = async (req, res, next) => {
    try {
-      const building = await buildingService.updateBuildingById(
+      const updateRow = await buildingService.updateBuildingById(
          req.params.buildingId,
          req.body
       );
-      if (building) {
+      if (updateRow > 0) {
          res.status(HttpStatus.OK).send(new SuccessResponse(building.id));
       } else {
          res.status(HttpStatus.NOT_FOUND).json(
@@ -89,8 +90,19 @@ const updateBuilding = async (req, res, next) => {
  */
 const softDeleteBuildingById = async (req, res, next) => {
    try {
-      await buildingService.softDeleteBuildingById(req.params.buildingId);
-      res.status(HttpStatus.OK).send(new SuccessResponse(req.params.id));
+      let rowAffected = await buildingService.softDeleteBuildingById(
+         req.params.buildingId
+      );
+      if (rowAffected > 0) {
+         res.status(HttpStatus.OK).send(new SuccessResponse(req.params.id));
+      } else {
+         res.status(HttpStatus.NOT_FOUND).json(
+            new ErrorResponse(
+               HttpStatus.BAD_REQUEST,
+               "Not found building to soft delete"
+            )
+         );
+      }
    } catch (error) {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
          new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, error.message)

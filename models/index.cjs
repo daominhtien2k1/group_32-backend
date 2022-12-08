@@ -46,4 +46,5 @@ db.Sequelize = Sequelize;
 db.user = require("./user.cjs")(sequelize, Sequelize);
 db.token = require("./token.cjs")(sequelize, Sequelize);
 db.building = require("./building.cjs")(sequelize, Sequelize);
+db.room = require("./room.cjs")(sequelize, Sequelize);
 module.exports = db;

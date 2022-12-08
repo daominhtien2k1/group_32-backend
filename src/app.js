@@ -9,7 +9,7 @@ import db from "../models/index.cjs";
 import authRouter from "./modules/auth/auth.route.js";
 import userRoute from "./modules/user/user.route.js";
 import buildingRoute from "./modules/building/building.route.js";
-
+import roomRoute from "./modules/room/room.route.js";
 app.use(morgan("dev"));
 app.use(cors());
 app.use(json());
@@ -17,6 +17,7 @@ app.use(json());
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRoute);
 app.use("/api/buildings", buildingRoute);
+app.use("/api/rooms", roomRoute);
 
 app.use((err, req, res, next) => {
    res.status(err.status || 500).send(err.message);

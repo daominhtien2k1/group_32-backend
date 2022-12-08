@@ -26,6 +26,24 @@ module.exports = {
                createdAt: new Date(),
                updatedAt: new Date(),
             },
+            {
+               name: "B5",
+               address: "Số 9 Tạ Quang Bửu, Hai Bà Trưng",
+               createdAt: new Date(),
+               updatedAt: new Date(),
+            },
+            {
+               name: "B13",
+               address: "Số 13 Tạ Quang Bửu, Hai Bà Trưng",
+               createdAt: new Date(),
+               updatedAt: new Date(),
+            },
+            {
+               name: "B6",
+               address: "Số 7 Tạ Quang Bửu, Hai Bà Trưng",
+               createdAt: new Date(),
+               updatedAt: new Date(),
+            },
          ],
          {}
       ),

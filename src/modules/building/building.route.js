@@ -8,22 +8,29 @@ import * as buildingValidator from "./building.validator.js";
 const router = Router();
 router.get(
    "/:buildingId",
+   auth,
    validate(buildingValidator.getById),
    buildingController.getBuildingById
 );
 router.post(
    "/",
+   auth,
+   //checkUserRole(UserRole.ADMIN),
    validate(buildingValidator.create),
    buildingController.createBuilding
 );
-router.get("/", buildingController.getAllBuildings);
+router.get("/", auth, buildingController.getAllBuildings);
 router.put(
    "/:buildingId",
+   auth,
+   checkUserRole(UserRole.ADMIN),
    validate(buildingValidator.update),
    buildingController.updateBuilding
 );
 router.delete(
    "/:buildingId",
+   auth,
+   checkUserRole(UserRole.ADMIN),
    validate(buildingValidator.softDeleteByid),
    buildingController.softDeleteBuildingById
 );

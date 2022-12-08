@@ -1,7 +1,7 @@
 import db from "../../../../models/index.cjs";
 import { softDeleteCondition } from "../../../constant.js";
 const Building = db.building;
-
+const Room = db.room;
 const buildingAttribute = [
    "id",
    "name",
@@ -48,7 +48,7 @@ const getBuildingById = async (id) => {
 
 const getAllBuildings = async () => {
    try {
-      return await Building.findAll({});
+      return await Building.findAll();
    } catch (error) {
       throw error;
    }
@@ -92,12 +92,16 @@ const updateBuildingById = async (buildingId, updateBody) => {
  */
 const softDeleteBuildingById = async (id) => {
    try {
-      await Building.destroy({
+      await Room.destroy({
+         where: {
+            buildingId: id,
+         },
+      });
+      return await Building.destroy({
          where: {
             id,
          },
       });
-      //return 1; // oke
    } catch (error) {
       throw error;
    }
