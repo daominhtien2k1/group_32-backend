@@ -126,11 +126,28 @@ const getAllRoomsByBuildingId = async (req, res, next) => {
       );
    }
 };
-
+const getRoomByFilterAndPaging = async (req, res, next) => {
+   try {
+      let { pageSize, pageNumber, keyword } = req.query;
+      let rooms = await roomService.getRoomByFilterAndPaging(
+         pageSize,
+         pageNumber,
+         keyword
+      );
+      return res.status(HttpStatus.OK).json(new SuccessResponse(rooms));
+   } catch (error) {
+      return res
+         .status(HttpStatus.INTERNAL_SERVER_ERROR)
+         .json(
+            new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, error.message)
+         );
+   }
+};
 export {
    getRoomById,
    createRoom,
    updateRoom,
    softDeleteRoomgById,
    getAllRoomsByBuildingId,
+   getRoomByFilterAndPaging,
 };

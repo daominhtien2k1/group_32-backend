@@ -121,11 +121,28 @@ const getAllBuildings = async (req, res, next) => {
       );
    }
 };
-
+const getBuildingByFilterAndPaging = async (req, res, next) => {
+   try {
+      let { pageSize, pageNumber, keyword } = req.query;
+      let buildings = await buildingService.getBuildingByFilterAndPaging(
+         pageSize,
+         pageNumber,
+         keyword
+      );
+      return res.status(HttpStatus.OK).json(new SuccessResponse(buildings));
+   } catch (error) {
+      return res
+         .status(HttpStatus.INTERNAL_SERVER_ERROR)
+         .json(
+            new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, error.message)
+         );
+   }
+};
 export {
    getBuildingById,
    createBuilding,
    updateBuilding,
    softDeleteBuildingById,
    getAllBuildings,
+   getBuildingByFilterAndPaging,
 };

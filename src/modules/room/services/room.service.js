@@ -133,10 +133,54 @@ const checkBuilldingExist = async (buildingId) => {
       throw error;
    }
 };
+const getRoomByFilterAndPaging = async (
+   pageSize = 20,
+   pageNumber = 1,
+   keyword = ""
+) => {
+   try {
+      let totalRecords = 0;
+      let includeObj = {
+         limit: pageSize - 0,
+         offset: (pageNumber - 1) * pageSize,
+         raw: true,
+      };
+      if (keyword && keyword.trim() !== "") {
+         includeObj.where = {
+            [Op.or]: [
+               {
+                  name: {
+                     [Op.like]: `%${keyword}%`,
+                  },
+               },
+            ],
+         };
+         totalRecords = await Room.count({
+            where: {
+               ...includeObj.where,
+            },
+         });
+      } else {
+         totalRecords = await Room.count();
+      }
+      let rooms = await Room.findAll({ ...includeObj });
+
+      return {
+         rooms,
+         totalRecords,
+         // pageSize,
+         // pageNumber,
+         // keyword,
+      };
+   } catch (error) {
+      throw error;
+   }
+};
 export {
    createRoom,
    getRoomById,
    getAllRoomsByBuildingId,
    updatRoomById,
    softDeleteRoomById,
+   getRoomByFilterAndPaging,
 };

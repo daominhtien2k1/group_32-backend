@@ -7,6 +7,12 @@ import { checkUserRole } from "../../middlewares/authorize.js";
 import * as buildingValidator from "./building.validator.js";
 const router = Router();
 router.get(
+   "/filter",
+   auth,
+   validate(buildingValidator.getBuildingByFilterAndPaging),
+   buildingController.getBuildingByFilterAndPaging
+);
+router.get(
    "/:buildingId",
    auth,
    validate(buildingValidator.getById),

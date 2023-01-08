@@ -29,5 +29,17 @@ const softDeleteByid = {
       buildingId: Joi.number().integer().required(),
    }),
 };
-
-export { create, update, getById, softDeleteByid };
+const getBuildingByFilterAndPaging = {
+   query: Joi.object().keys({
+      pageSize: Joi.number().integer().min(1).optional(),
+      pageNumber: Joi.number().integer().min(1).optional(),
+      keyword: Joi.string().optional().allow(""),
+   }),
+};
+export {
+   create,
+   update,
+   getById,
+   softDeleteByid,
+   getBuildingByFilterAndPaging,
+};

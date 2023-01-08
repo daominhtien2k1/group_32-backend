@@ -106,11 +106,59 @@ const softDeleteBuildingById = async (id) => {
       throw error;
    }
 };
+const getBuildingByFilterAndPaging = async (
+   pageSize = 20,
+   pageNumber = 1,
+   keyword = ""
+) => {
+   try {
+      let totalRecords = 0;
+      let includeObj = {
+         limit: pageSize - 0,
+         offset: (pageNumber - 1) * pageSize,
+         raw: true,
+      };
+      if (keyword && keyword.trim() !== "") {
+         includeObj.where = {
+            [Op.or]: [
+               {
+                  name: {
+                     [Op.like]: `%${keyword}%`,
+                  },
+               },
+               {
+                  address: {
+                     [Op.like]: `%${keyword}%`,
+                  },
+               },
+            ],
+         };
+         totalRecords = await Building.count({
+            where: {
+               ...includeObj.where,
+            },
+         });
+      } else {
+         totalRecords = await Building.count();
+      }
+      let buildings = await Building.findAll({ ...includeObj });
 
+      return {
+         buildings,
+         totalRecords,
+         // pageSize,
+         // pageNumber,
+         // keyword,
+      };
+   } catch (error) {
+      throw error;
+   }
+};
 export {
    createBuilding,
    getBuildingById,
    updateBuildingById,
    softDeleteBuildingById,
    getAllBuildings,
+   getBuildingByFilterAndPaging,
 };

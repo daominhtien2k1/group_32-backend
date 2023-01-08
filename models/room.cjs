@@ -1,7 +1,5 @@
 "use strict";
 
-const { hashString } = require("../src/middlewares/bcrypt.cjs");
-
 module.exports = (sequelize, DataTypes) => {
    const Room = sequelize.define(
       "Room",
