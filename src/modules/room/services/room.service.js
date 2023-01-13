@@ -166,8 +166,8 @@ const getRoomByFilterAndPaging = async (
       let rooms = await Room.findAll({ ...includeObj });
 
       return {
-         rooms,
-         totalRecords,
+         items: rooms,
+         totalItems: totalRecords,
          // pageSize,
          // pageNumber,
          // keyword,

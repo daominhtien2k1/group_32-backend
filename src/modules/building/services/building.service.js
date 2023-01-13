@@ -144,8 +144,8 @@ const getBuildingByFilterAndPaging = async (
       let buildings = await Building.findAll({ ...includeObj });
 
       return {
-         buildings,
-         totalRecords,
+         items: buildings,
+         totalItems: totalRecords,
          // pageSize,
          // pageNumber,
          // keyword,
