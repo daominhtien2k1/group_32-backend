@@ -50,11 +50,11 @@ const getUserByEmail = async (email) => {
    }
 };
 
-const updateUserById = async (updateBody) => {
+const updateUserById = async (id, updateBody) => {
    try {
       return await User.update(updateBody, {
          where: {
-            id: updateBody.userId,
+            id,
          },
       });
    } catch (error) {

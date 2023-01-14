@@ -47,16 +47,12 @@ const createRoom = async (buildingId, createRoomBody) => {
  */
 const getRoomById = async (buildingId, roomId) => {
    try {
-      // kiểm tra xem tồn tại tòa nhà không
-      const building = await checkBuilldingExist(buildingId);
-      let room = {};
-      if (building) {
-         room = await Room.findOne({
-            where: {
-               id: roomId,
-            },
-         });
-      }
+      console.log(roomId);
+      const room = await Room.findOne({
+         where: {
+            id: roomId,
+         }
+      });
       return room;
    } catch (error) {
       throw error;
@@ -176,7 +172,7 @@ const getRoomByFilterAndPaging = async (
       throw error;
    }
 };
-export {
+export default {
    createRoom,
    getRoomById,
    getAllRoomsByBuildingId,

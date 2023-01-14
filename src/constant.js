@@ -20,6 +20,7 @@ export const HttpStatus = {
 export const MIN_PASSWORD_CHARACTER = 6;
 export const UserRole = {
     ADMIN: 'admin',
+    MANAGER: 'manager',
     STUDENT: 'student',
 }
 export const UserStatus = {
@@ -33,6 +34,14 @@ export const TokenType = {
     REFRESH: 'refresh',
     ACTIVE_EMAIL: 'active_email',
     RESET_PASSWORD: 'reset_password',
+}
+export const RequestType = {
+    ROOM: 'room',
+}
+export const RequestStatus = {
+    PENDING: 'pending',
+    ACCEPTED: 'accepted',
+    REJECTED: 'rejected',
 }
 
 export const softDeleteCondition = {

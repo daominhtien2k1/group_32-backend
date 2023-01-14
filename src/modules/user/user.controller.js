@@ -4,7 +4,7 @@ import ErrorResponse from "../../utils/ErrorResponse.js";
 import SuccessResponse from "../../utils/SuccessResponse.js";
 const getProfile = async (req, res, next) => {
    try {
-      const userProfile = await userService.getUserById(req.body.userId);
+      const userProfile = await userService.getUserById(req.user.userId);
       delete userProfile.dataValues.password;
       return res
          .status(HttpStatus.OK)

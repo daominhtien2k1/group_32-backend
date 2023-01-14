@@ -13,8 +13,7 @@ export const auth = async (req, res, next) => {
             if (error) {
                 return res.status(HttpStatus.UNAUTHORIZED).json(new ErrorResponse(HttpStatus.UNAUTHORIZED, 'Unauthorized'));
             } else {
-                req.body.userId = authData.userId;
-                req.body.role = authData.role;
+                req.user = authData;
                 next();
             }
         })
