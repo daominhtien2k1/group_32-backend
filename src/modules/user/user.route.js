@@ -28,21 +28,39 @@ router.get("/user",
    validate(userValidator.getUserList),
    userController.getUserList
 )
-router.get("/user/:id",
+// router.get("/user/:id",
+//    auth,
+//    checkUserRole([UserRole.ADMIN]),
+// )
+router.post("/user",
    auth,
    checkUserRole([UserRole.ADMIN]),
+   validate(userValidator.createUser),
+   userController.createUser
 )
 router.get("/user/room/:roomId",
    auth,
-   checkUserRole([UserRole.ADMIN])
+   checkUserRole([UserRole.ADMIN]),
+   validate(userValidator.getUserByRoomId),
+   userController.getUserByRoomId
 )
 router.patch("/user/:id",
    auth,
    checkUserRole([UserRole.ADMIN]),
+   validate(userValidator.updateUser),
+   userController.updateUser
+)
+router.patch("/user/:id/status",
+   auth,
+   checkUserRole([UserRole.ADMIN]),
+   validate(userValidator.updateUserStatus),
+   userController.updateUserStatus
 )
 router.delete("/user/:id",
    auth,
-   checkUserRole([UserRole.ADMIN])
+   checkUserRole([UserRole.ADMIN]),
+   validate(userValidator.deleteUser),
+   userController.deleteUser
 )
 router.get(
    "/profile",
@@ -53,11 +71,13 @@ router.get(
 router.patch("/profile",
    auth,
    checkUserRole([UserRole.STUDENT, UserRole.ADMIN]),
+   validate(userValidator.updateProfile),
    userController.updateProfile
 );
 router.patch("/profile/password",
    auth,
    checkUserRole([UserRole.STUDENT, UserRole.ADMIN]),
+   validate(userValidator.changePassword),
    userController.changePassword
 )
 export default router;

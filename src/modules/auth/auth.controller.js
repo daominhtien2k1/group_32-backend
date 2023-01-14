@@ -36,13 +36,13 @@ const login = async (req, res) => {
             res.status(HttpStatus.BAD_REQUEST).json(new ErrorResponse(HttpStatus.INVALID_USERNAME_OR_PASSWORD, 'Invalid email or password'))
             return;
         }
-        if (user.status === UserStatus.REGISTERING) {
-            res.status(HttpStatus.BAD_REQUEST).json(new ErrorResponse(HttpStatus.BAD_REQUEST, 'Inactive account'))
+        if (user.status !== UserStatus.ACTIVE) {
+            res.status(HttpStatus.BAD_REQUEST).json(new ErrorResponse(HttpStatus.BAD_REQUEST, 'Inactive account or email was not verified'))
             return;
         }
 
         const tokens = await tokenService.generateAuthTokens(user);
-        delete user.password;
+        delete user.dataValues.password;
         res.status(HttpStatus.OK).json(new SuccessResponse({ user, tokens }))
         return;
     } catch (error) {
