@@ -13,7 +13,7 @@ router.get(
    roomController.getRoomByFilterAndPaging
 );
 router.get(
-   "/:buildingId/:roomId",
+   "/detail/:roomId",
    auth,
    validate(roomValidator.getById),
    roomController.getRoomById
@@ -42,7 +42,7 @@ router.delete(
    "/:roomId",
    auth,
    checkUserRole(UserRole.ADMIN),
-   validate(roomValidator.softDeleteByid),
-   roomController.softDeleteRoomgById
+   validate(roomValidator.softDeleteById),
+   roomController.softDeleteRoomById
 );
 export default router;
