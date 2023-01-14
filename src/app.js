@@ -16,7 +16,7 @@ app.use(cors());
 app.use(json());
 
 app.use("/api/auth", authRouter);
-app.use("/api/user", userRoute);
+app.use("/api", userRoute);
 app.use("/api/buildings", buildingRoute);
 app.use("/api/rooms", roomRoute);
 app.use("/api/request", requestRoute)

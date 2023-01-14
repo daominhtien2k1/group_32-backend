@@ -1,7 +1,7 @@
 import { Router } from "express";
 import validate from "../../middlewares/validate.js";
 import authValidator from "./auth.validator.js";
-import authStudentController from "./auth.student.controller.js";
+import authController from "./auth.controller.js";
 
 const router = Router();
 
@@ -11,38 +11,30 @@ const router = Router();
 router.post(
    "/register",
    validate(authValidator.register),
-   authStudentController.register
+   authController.register
 );
 router.post(
    "/send-verification-email",
    validate(authValidator.sendVerificationEmail),
-   authStudentController.sendVerificationEmail
+   authController.sendVerificationEmail
 );
 router.post(
    "/verify-email",
    validate(authValidator.verifyEmail),
-   authStudentController.verifyEmail
+   authController.verifyEmail
 );
+// Use for both admin and student
 router.post(
    "/login",
    validate(authValidator.login),
-   authStudentController.login
+   authController.login
 );
 router.post(
    "/refresh-token",
    validate(authValidator.refreshTokens),
-   authStudentController.refreshTokens
+   authController.refreshTokens
 );
-// router.post('/forgot-password', validate(authValidator.forgotPassword), authStudentController);
-// router.post('/reset-password', validate(authValidator.resetPassword), authStudentController.resetPassword);
-
-/**
- * Admin route
- */
-router.post(
-   "/admin/login",
-   validate(authValidator.login),
-   authStudentController.adminLogin
-);
+// router.post('/forgot-password', validate(authValidator.forgotPassword), authController);
+// router.post('/reset-password', validate(authValidator.resetPassword), authController.resetPassword);
 
 export default router;

@@ -24,7 +24,6 @@ const createBuilding = async (createBuildingBody) => {
       });
       return newBuilding;
    } catch (error) {
-      console.log(error);
       throw error;
    }
 };

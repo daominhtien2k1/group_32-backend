@@ -41,7 +41,6 @@ const getBuildingById = async (req, res, next) => {
  */
 const createBuilding = async (req, res) => {
    try {
-      console.log(req.body);
       const newBuilding = await buildingService.createBuilding(req.body);
       res.status(HttpStatus.OK).send(new SuccessResponse(newBuilding.id));
    } catch (error) {
