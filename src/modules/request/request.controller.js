@@ -13,9 +13,7 @@ const createRequest = async (req, res) => {
                     new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, { key: 'roomId', message: "Student already have room" })
                 );
         }
-        // TODO: remove after fix service getRoomById
-        const _ = ''
-        const isRoomExisted = await roomService.getRoomById(_, req.body.roomId);
+        const isRoomExisted = await roomService.getRoomById(req.body.roomId);
         if (!isRoomExisted) {
             return res
                 .status(HttpStatus.BAD_REQUEST)
@@ -70,9 +68,7 @@ const studentUpdateRequest = async (req, res) => {
                     new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, { key: 'roomId', message: "Cannot update after reject or accept" })
                 );
         }
-        // TODO: remove after fix service getRoomById
-        const _ = ''
-        const isRoomExisted = await roomService.getRoomById(_, req.body.roomId);
+        const isRoomExisted = await roomService.getRoomById(req.body.roomId);
         if (!isRoomExisted) {
             return res
                 .status(HttpStatus.BAD_REQUEST)
