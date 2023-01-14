@@ -28,7 +28,6 @@ const createRoom = async (buildingId, createRoomBody) => {
          ...createRoomBody,
       });
    } catch (error) {
-      //console.log(error);
       throw error;
    }
 };

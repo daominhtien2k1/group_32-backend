@@ -22,7 +22,7 @@ const createRequest = async (req, res) => {
                 );
         }
 
-        const newRequest = await requestService.insertRequest({ ...req.body, studentId: req.user.userId, status: RequestStatus.PENDING });
+        const newRequest = await requestService.insertRequest({ ...req.body, studentId: req.user.id, status: RequestStatus.PENDING });
         return res.status(HttpStatus.OK).json(new SuccessResponse(newRequest));
     } catch (error) {
         return res
@@ -36,7 +36,7 @@ const createRequest = async (req, res) => {
 const getRequestList = async (req, res) => {
     try {
         if (req.user.role == UserRole.STUDENT) {
-            const requestList = await requestService.getRequestListByStudentId(req.user.userId);
+            const requestList = await requestService.getRequestListByStudentId(req.user.id);
             return res.status(HttpStatus.OK).json(new SuccessResponse(requestList));
         } else {
             const requestList = await requestService.getAllRequestList();
@@ -54,7 +54,7 @@ const getRequestList = async (req, res) => {
 const studentUpdateRequest = async (req, res) => {
     try {
         const isRequestExisted = await requestService.getRequestById(req.params.id);
-        if (!isRequestExisted || isRequestExisted.studentId !== req.user.userId) {
+        if (!isRequestExisted || isRequestExisted.studentId !== req.user.id) {
             return res
                 .status(HttpStatus.BAD_REQUEST)
                 .json(

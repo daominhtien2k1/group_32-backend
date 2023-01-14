@@ -8,7 +8,7 @@ const validate = (schema) => (req, res, next) => {
          result = schema.params.validate(req.params);
          if (result.error) {
             return next(
-               new ErrorResponse(HttpStatus.BAD_REQUEST, result.error)
+               new ErrorResponse(HttpStatus.BAD_REQUEST, result.error.details)
             );
          }
       }

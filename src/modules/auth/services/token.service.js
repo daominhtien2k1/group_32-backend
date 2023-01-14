@@ -5,7 +5,7 @@ const Token = db.token;
 import { TokenType } from '../../../constant.js';
 const generateToken = (user, expires, type, secret = process.env.JWT_SECRET_TOKEN) => {
     const payload = {
-        userId: user.id,
+        id: user.id,
         iat: moment().unix(),
         exp: expires.unix(),
         type,

@@ -36,39 +36,6 @@ const login = async (req, res) => {
             res.status(HttpStatus.BAD_REQUEST).json(new ErrorResponse(HttpStatus.INVALID_USERNAME_OR_PASSWORD, 'Invalid email or password'))
             return;
         }
-        if (user.dataValues.role === UserRole.ADMIN) {
-            res.status(HttpStatus.FORBIDDEN).json(new ErrorResponse(HttpStatus.FORBIDDEN, 'Invalid login'));
-            return;
-        }
-        if (user.status === UserStatus.REGISTERING) {
-            res.status(HttpStatus.BAD_REQUEST).json(new ErrorResponse(HttpStatus.BAD_REQUEST, 'Inactive account'))
-            return;
-        }
-
-        const tokens = await tokenService.generateAuthTokens(user);
-        delete user.password;
-        res.status(HttpStatus.OK).json(new SuccessResponse({ user, tokens }))
-        return;
-    } catch (error) {
-        res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, error.message))
-        return;
-    }
-}
-
-
-const adminLogin = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        const user = await userService.getUserByEmail(email);
-
-        if (!user || !checkHashedString(password, user.dataValues.password)) {
-            res.status(HttpStatus.BAD_REQUEST).json(new ErrorResponse(HttpStatus.INVALID_USERNAME_OR_PASSWORD, 'Invalid email or password'))
-            return;
-        }
-        if (user.dataValues.role === UserRole.STUDENT) {
-            res.status(HttpStatus.FORBIDDEN).json(new ErrorResponse(HttpStatus.FORBIDDEN, 'Invalid login'));
-            return;
-        }
         if (user.status === UserStatus.REGISTERING) {
             res.status(HttpStatus.BAD_REQUEST).json(new ErrorResponse(HttpStatus.BAD_REQUEST, 'Inactive account'))
             return;
@@ -133,4 +100,4 @@ const verifyEmail = async (req, res, next) => {
     }
 }
 
-export default { register, login, adminLogin, refreshTokens, sendVerificationEmail, verifyEmail }
+export default { register, login, refreshTokens, sendVerificationEmail, verifyEmail }
