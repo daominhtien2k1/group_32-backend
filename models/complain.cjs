@@ -1,26 +1,34 @@
-'use strict';
+"use strict";
 
 module.exports = (sequelize, DataTypes) => {
-  const Complain = sequelize.define(
-    'Complain',
-    {
-      studentId: {
-        type: DataTypes.STRING,
-        allowNull: false,
+   const Complain = sequelize.define(
+      "Complain",
+      {
+         studentId: {
+            type: DataTypes.STRING,
+            allowNull: false,
+         },
+         type: {
+            type: DataTypes.STRING,
+            allowNull: false,
+         },
+         content: {
+            type: DataTypes.TEXT,
+            allowNull: false,
+         },
+         level: {
+            type: DataTypes.STRING,
+            allowNull: false,
+         },
       },
-      content: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-    },
-    {
-      deletedAt: 'deletedAt',
-      paranoid: true,
-      timestamps: true,
-    },
-  );
-  Complain.associate = function (models) {
-    // associations can be defined here
-  };
-  return Complain;
+      {
+         deletedAt: "deletedAt",
+         paranoid: true,
+         timestamps: true,
+      }
+   );
+   Complain.associate = function (models) {
+      // associations can be defined here
+   };
+   return Complain;
 };
