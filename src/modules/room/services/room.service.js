@@ -22,18 +22,11 @@ const buildingAttribute = [
  */
 const createRoom = async (buildingId, createRoomBody) => {
    try {
-      // kiểm tra xem tồn tại tòa nhà không
-      const building = await checkBuilldingExist(buildingId);
       createRoomBody.buildingId = buildingId;
       let newRoom = {};
-      if (building) {
-         // nếu có tòa nah thì tạo mới phòng
-         newRoom = await Room.create({
-            ...createRoomBody,
-         });
-      }
-
-      return newRoom;
+      return await Room.create({
+         ...createRoomBody,
+      });
    } catch (error) {
       //console.log(error);
       throw error;
@@ -45,15 +38,13 @@ const createRoom = async (buildingId, createRoomBody) => {
  * @param {*} id
  * @returns thông tin tòa nhà
  */
-const getRoomById = async (buildingId, roomId) => {
+const getRoomById = async (roomId) => {
    try {
-      console.log(roomId);
-      const room = await Room.findOne({
+      return await Room.findOne({
          where: {
             id: roomId,
-         }
+         },
       });
-      return room;
    } catch (error) {
       throw error;
    }
@@ -61,15 +52,11 @@ const getRoomById = async (buildingId, roomId) => {
 
 const getAllRoomsByBuildingId = async (buildingId) => {
    try {
-      // kiểm tra xem tồn tại tòa nhà không
-      const building = await checkBuilldingExist(buildingId);
-      if (building) {
-         return await Room.findAll({
-            where: {
-               buildingId,
-            },
-         });
-      } else return [];
+      return await Room.findAll({
+         where: {
+            buildingId,
+         },
+      });
    } catch (error) {
       throw error;
    }
@@ -80,23 +67,17 @@ const getAllRoomsByBuildingId = async (buildingId) => {
  * @param {*} updateBody
  * @returns thông tin tòa nhà được cập nhật
  */
-const updatRoomById = async (buildingId, roomId, updateBody) => {
+const updateRoomById = async (buildingId, roomId, updateBody) => {
    try {
-      // kiểm tra xem tồn tại tòa nhà không
-      const building = await checkBuilldingExist(buildingId);
       updateBody.buildingId = buildingId;
-      if (building) {
-         return await Room.update(
-            { ...updateBody },
-            {
-               where: {
-                  id: roomId,
-               },
-            }
-         );
-      } else {
-         return -1; // not found building
-      }
+      return await Room.update(
+         { ...updateBody },
+         {
+            where: {
+               id: roomId,
+            },
+         }
+      );
    } catch (error) {
       throw error;
    }
@@ -119,16 +100,6 @@ const softDeleteRoomById = async (id) => {
    }
 };
 
-const checkBuilldingExist = async (buildingId) => {
-   try {
-      let building = await Building.findOne({
-         where: { id: buildingId },
-      });
-      return building;
-   } catch (error) {
-      throw error;
-   }
-};
 const getRoomByFilterAndPaging = async (
    pageSize = 20,
    pageNumber = 1,
@@ -164,9 +135,6 @@ const getRoomByFilterAndPaging = async (
       return {
          items: rooms,
          totalItems: totalRecords,
-         // pageSize,
-         // pageNumber,
-         // keyword,
       };
    } catch (error) {
       throw error;
@@ -176,7 +144,7 @@ export default {
    createRoom,
    getRoomById,
    getAllRoomsByBuildingId,
-   updatRoomById,
+   updateRoomById,
    softDeleteRoomById,
    getRoomByFilterAndPaging,
 };

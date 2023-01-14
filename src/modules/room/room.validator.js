@@ -28,7 +28,6 @@ const update = {
 };
 const getById = {
    params: Joi.object({
-      buildingId: Joi.number().integer().required(),
       roomId: Joi.number().integer().required(),
    }),
 };
@@ -37,7 +36,7 @@ const getAllRoomsByBuildingId = {
       buildingId: Joi.number().integer().required(),
    }),
 };
-const softDeleteByid = {
+const softDeleteById = {
    params: Joi.object({
       roomId: Joi.number().integer().required(),
    }),
@@ -54,7 +53,7 @@ export {
    create,
    update,
    getById,
-   softDeleteByid,
+   softDeleteById,
    getAllRoomsByBuildingId,
    getRoomByFilterAndPaging,
 };

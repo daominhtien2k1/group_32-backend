@@ -19,6 +19,7 @@ router.get(
    validate(userValidator.getAdmin),
    userController.getAdmin
 );
+// chưa làm thiếu bảng liên kết giữa phòng với sinh viên
 router.get(
    "/students/room/:roomId",
    validate(userValidator.getStudentByRoomId),
