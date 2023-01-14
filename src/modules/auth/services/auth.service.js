@@ -25,7 +25,7 @@ const verifyEmail = async (verifyEmailToken) => {
         if (verifyResult) {
             const user = await userService.getUserById(verifyResult.dataValues.userId);
             if (user) {
-                await userService.updateUserById({ userId: verifyResult.dataValues.userId, status: UserStatus.ACTIVE })
+                await userService.updateUserById(verifyResult.dataValues.userId, { status: UserStatus.ACTIVE })
             }
             return user;
         }

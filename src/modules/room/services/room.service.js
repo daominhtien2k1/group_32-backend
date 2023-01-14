@@ -140,7 +140,7 @@ const getRoomByFilterAndPaging = async (
       throw error;
    }
 };
-export {
+export default {
    createRoom,
    getRoomById,
    getAllRoomsByBuildingId,

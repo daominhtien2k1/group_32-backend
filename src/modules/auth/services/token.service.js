@@ -3,13 +3,14 @@ import Jwt from 'jsonwebtoken';
 import db from "../../../../models/index.cjs";
 const Token = db.token;
 import { TokenType } from '../../../constant.js';
-const generateToken = (userId, role, expires, type, secret = process.env.JWT_SECRET_TOKEN) => {
+const generateToken = (user, expires, type, secret = process.env.JWT_SECRET_TOKEN) => {
     const payload = {
-        userId,
+        userId: user.id,
         iat: moment().unix(),
         exp: expires.unix(),
         type,
-        role,
+        role: user.role,
+        roomId: user.roomId,
     }
 
     return Jwt.sign(payload, secret);
@@ -60,10 +61,10 @@ const verifyToken = async (token, type) => {
 
 const generateAuthTokens = async (user) => {
     const accessTokenExpires = moment().add(process.env.JWT_ACCESS_TOKEN_EXPIRED_IN, 'minutes');
-    const accessToken = generateToken(user.id, user.role, accessTokenExpires, TokenType.ACCESS);
+    const accessToken = generateToken(user, accessTokenExpires, TokenType.ACCESS);
 
     const refreshTokenExpires = moment().add(process.env.JWT_REFRESH_TOKEN_EXPIRED_IN, 'days');
-    const refreshToken = generateToken(user.id, user.role, refreshTokenExpires, TokenType.REFRESH);
+    const refreshToken = generateToken(user, refreshTokenExpires, TokenType.REFRESH);
 
     await saveToken(refreshToken, user.id, refreshTokenExpires, TokenType.REFRESH);
 
@@ -81,14 +82,14 @@ const generateAuthTokens = async (user) => {
 
 const generateVerifyEmailToken = async (user) => {
     const expires = moment().add(process.env.JWT_VERIFY_EMAIL_TOKEN_EXPIRED_IN, 'minutes');
-    const verifyEmailToken = generateToken(user.id, user.role, expires, TokenType.ACTIVE_EMAIL);
+    const verifyEmailToken = generateToken(user, expires, TokenType.ACTIVE_EMAIL);
     await saveToken(verifyEmailToken, user.id, expires, TokenType.ACTIVE_EMAIL);
     return verifyEmailToken;
 }
 
 const generateResetPasswordToken = async (user) => {
     const expires = moment().add(process.env.JWT_RESET_PASSWORD_TOKEN_EXPIRED_IN, 'minutes');
-    const resetPasswordToken = generateToken(user.id, user.role, expires, TokenType.RESET_PASSWORD);
+    const resetPasswordToken = generateToken(user, expires, TokenType.RESET_PASSWORD);
     await saveToken(resetPasswordToken, user.id, expires, TokenType.RESET_PASSWORD);
     return resetPasswordToken;
 }
