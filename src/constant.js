@@ -49,10 +49,12 @@ export const softDeleteCondition = {
       [Op.ne]: null,
    },
 };
-export const AllCode = {
-   CT1: "Điên nước và hư hỏng khác",
-   CT2: "An ninh trật tự, vệ sinh môi trường",
-   CT3: "Hỗ trợ phần mềm trực tuyến",
-   CL1: "Không cần gấp",
-   CL2: "Cần gấp(cháy nổ, an ninh trật tự)",
+export const ComplainType = {
+   INFRASTRUCTURE: "infrastructure",
+   SECURITY: "security",
+   ENVIRONMENT: "environment",
+};
+export const ComplainLevel = {
+   LOW: "low",
+   HIGHT: "hight",
 };

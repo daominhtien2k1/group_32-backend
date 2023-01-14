@@ -2,12 +2,13 @@ import { HttpStatus } from "../../constant.js";
 import * as complainService from "./services/complain.service.js";
 import ErrorResponse from "../../utils/ErrorResponse.js";
 import SuccessResponse from "../../utils/SuccessResponse.js";
-import { UserRole } from "../../constant.js";
+import { UserRole, RequestStatus } from "../../constant.js";
 const createComplain = async (req, res, next) => {
    try {
       let complainId = await complainService.createComplain({
          studentId: req.user.id,
          ...req.body,
+         status: RequestStatus.PENDING,
       });
       if (complainId)
          return res.status(HttpStatus.OK).json(new SuccessResponse(complainId));
@@ -43,17 +44,14 @@ const getComplainById = async (req, res, next) => {
             return res
                .status(HttpStatus.OK)
                .json(new SuccessResponse(complain));
-         } else {
-            return res
-               .status(HttpStatus.UNAUTHORIZED)
-               .json(
-                  new ErrorResponse(HttpStatus.UNAUTHORIZED, "Unauthorized")
-               );
          }
-      } else
          return res
-            .status(HttpStatus.ITEM_NOT_FOUND)
-            .json(new ErrorResponse(HttpStatus.ITEM_NOT_FOUND, "Not found"));
+            .status(HttpStatus.UNAUTHORIZED)
+            .json(new ErrorResponse(HttpStatus.UNAUTHORIZED, "Unauthorized"));
+      }
+      return res
+         .status(HttpStatus.ITEM_NOT_FOUND)
+         .json(new ErrorResponse(HttpStatus.ITEM_NOT_FOUND, "Not found"));
    } catch (error) {
       return res
          .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -62,6 +60,7 @@ const getComplainById = async (req, res, next) => {
          );
    }
 };
+
 const getComplainByStudentId = async (req, res, next) => {
    try {
       let complains =
@@ -89,34 +88,23 @@ const getComplainList = async (req, res, next) => {
 };
 const updateComplain = async (req, res, next) => {
    try {
-      let complain = await complainService.getComplainById(req.params.id);
-      if (complain && req.user.id == complain.studentId) {
-         let rowAffected = await complainService.updateComplain(
-            req.params.id,
-            req.body
+      let rowAffected = await complainService.updateComplain(
+         req.params.id,
+         req.body
+      );
+      if (rowAffected > 0) {
+         const updatedComplain = await complainService.getComplainById(
+            req.params.id
          );
-         if (rowAffected > 0) {
-            const updatedComplain = await complainService.getComplainById(
-               req.params.id
-            );
-            return res
-               .status(HttpStatus.OK)
-               .json(new SuccessResponse(updatedComplain));
-         } else {
-            return res
-               .status(HttpStatus.BAD_REQUEST)
-               .json(
-                  new ErrorResponse(
-                     HttpStatus.BAD_REQUEST,
-                     "update complain failed"
-                  )
-               );
-         }
-      } else {
          return res
-            .status(HttpStatus.UNAUTHORIZED)
-            .json(new ErrorResponse(HttpStatus.UNAUTHORIZED, "Unauthorized"));
+            .status(HttpStatus.OK)
+            .json(new SuccessResponse(updatedComplain));
       }
+      return res
+         .status(HttpStatus.BAD_REQUEST)
+         .json(
+            new ErrorResponse(HttpStatus.BAD_REQUEST, "update complain failed")
+         );
    } catch (error) {
       return res
          .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -134,7 +122,8 @@ const deleteComplain = async (req, res, next) => {
          // admin thì xem được hoặc user.id trùng với studentId của complain
          if (
             req?.user?.role === UserRole.ADMIN ||
-            req?.user?.id === complain?.studentId
+            (req?.user?.id === complain?.studentId &&
+               complain.status === RequestStatus.PENDING)
          ) {
             const rowAffected = await complainService.deleteComplain(
                req.params.id
@@ -142,28 +131,24 @@ const deleteComplain = async (req, res, next) => {
             if (rowAffected > 0) {
                return res
                   .status(HttpStatus.OK)
-                  .json(new SuccessResponse("OKE"));
-            } else {
-               return res
-                  .status(HttpStatus.BAD_REQUEST)
-                  .json(
-                     new ErrorResponse(
-                        HttpStatus.BAD_REQUEST,
-                        "Delete complain failed"
-                     )
-                  );
+                  .json(new SuccessResponse(req.params.id));
             }
-         } else {
             return res
-               .status(HttpStatus.UNAUTHORIZED)
+               .status(HttpStatus.BAD_REQUEST)
                .json(
-                  new ErrorResponse(HttpStatus.UNAUTHORIZED, "Unauthorized")
+                  new ErrorResponse(
+                     HttpStatus.BAD_REQUEST,
+                     "Delete complain failed"
+                  )
                );
          }
-      } else
          return res
-            .status(HttpStatus.ITEM_NOT_FOUND)
-            .json(new ErrorResponse(HttpStatus.ITEM_NOT_FOUND, "Not found"));
+            .status(HttpStatus.UNAUTHORIZED)
+            .json(new ErrorResponse(HttpStatus.UNAUTHORIZED, "Unauthorized"));
+      }
+      return res
+         .status(HttpStatus.ITEM_NOT_FOUND)
+         .json(new ErrorResponse(HttpStatus.ITEM_NOT_FOUND, "Not found"));
    } catch (error) {
       return res
          .status(HttpStatus.INTERNAL_SERVER_ERROR)

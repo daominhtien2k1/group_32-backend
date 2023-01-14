@@ -32,7 +32,13 @@ const getComplainByStudentId = async (studentId) => {
 };
 const getComplainList = async (query) => {
    try {
-      const { page = 1, limit = 10, type = "", level = "" } = query;
+      const {
+         page = 1,
+         limit = 10,
+         type = "",
+         level = "",
+         status = "",
+      } = query;
       let dbQuery = {};
       if (type) {
          dbQuery = {
@@ -44,6 +50,12 @@ const getComplainList = async (query) => {
          dbQuery = {
             ...dbQuery,
             level,
+         };
+      }
+      if (status) {
+         dbQuery = {
+            ...dbQuery,
+            status,
          };
       }
       const data = await Complain.findAndCountAll({

@@ -20,6 +20,13 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
          },
+         status: {
+            type: DataTypes.STRING,
+            allowNull: false,
+         },
+         response: {
+            type: DataTypes.STRING,
+         },
       },
       {
          deletedAt: "deletedAt",

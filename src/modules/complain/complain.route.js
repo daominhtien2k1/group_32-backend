@@ -25,6 +25,7 @@ router.get(
 router.put(
    "/:id",
    auth,
+   checkUserRole([UserRole.ADMIN]),
    validate(complainValidator.updateComplain),
    complainController.updateComplain
 );
