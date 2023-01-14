@@ -119,10 +119,37 @@ const updateUserById = async (id, updateBody) => {
       throw error;
    }
 };
+
+
+const softDeleteUserById = async (id) => {
+   try {
+      return await User.destroy({
+         where: {
+            id,
+         },
+      });
+   } catch (error) {
+      throw error;
+   }
+};
+
+const getUserByRoomId = async (roomId) => {
+   try {
+      return await User.findAll({
+         where: {
+            roomId
+         }
+      })
+   } catch (error) {
+      throw error
+   }
+}
 export default {
    createUser,
    getUserById,
    getUserByEmail,
    updateUserById,
-   getUserList
+   getUserList,
+   softDeleteUserById,
+   getUserByRoomId
 };

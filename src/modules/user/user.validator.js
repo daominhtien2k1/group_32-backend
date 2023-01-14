@@ -1,28 +1,6 @@
 import Joi from "joi";
 import { MIN_PASSWORD_CHARACTER, UserRole, UserStatus } from '../../constant.js';
-// define user validator here
 
-// const getAdmin = {
-//    query: Joi.object().keys({
-//       pageSize: Joi.number().integer().min(1).optional(),
-//       pageNumber: Joi.number().integer().min(1).optional(),
-//       keyword: Joi.string().optional().allow(""),
-//       name: Joi.string().optional().allow(""),
-//       email: Joi.string().optional().allow(""),
-//    }),
-// };
-// const getStudentByRoomId = {
-//    params: Joi.object().keys({
-//       roomId: Joi.number().integer(),
-//    }),
-//    query: Joi.object().keys({
-//       pageSize: Joi.number().integer().min(1).optional(),
-//       pageNumber: Joi.number().integer().min(1).optional(),
-//       keyword: Joi.string().optional().allow(""),
-//       name: Joi.string().optional().allow(""),
-//       email: Joi.string().optional().allow(""),
-//    }),
-// };
 const updateProfile = {
    body: Joi.object({
       name: Joi.string().required().trim(),
@@ -37,6 +15,15 @@ const changePassword = {
    })
 }
 
+const createUser = {
+   body: Joi.object({
+      email: Joi.string().lowercase().required().trim(),
+      password: Joi.string().min(MIN_PASSWORD_CHARACTER).required(),
+      name: Joi.string().required().trim(),
+      studentCode: Joi.string().required().trim(),
+   })
+}
+
 const getUserList = {
    query: Joi.object({
       page: Joi.number().positive(),
@@ -47,8 +34,43 @@ const getUserList = {
    })
 }
 
+const updateUser = {
+   params: Joi.object({
+      id: Joi.number().positive().required()
+   }),
+   body: Joi.object({
+      name: Joi.string().required().trim(),
+      studentCode: Joi.string().required().trim(),
+   })
+}
+
+const updateUserStatus = {
+   params: Joi.object({
+      id: Joi.number().positive().required()
+   }),
+   body: Joi.object({
+      status: Joi.string().valid(...Object.values(UserStatus)).required(),
+   })
+}
+
+const deleteUser = {
+   params: Joi.object({
+      id: Joi.number().positive().required()
+   })
+}
+
+const getUserByRoomId = {
+   params: Joi.object({
+      roomId: Joi.number().positive().required()
+   })
+}
 export default {
    updateProfile,
    changePassword,
-   getUserList
+   getUserList,
+   deleteUser,
+   updateUser,
+   updateUserStatus,
+   getUserByRoomId,
+   createUser
 };
