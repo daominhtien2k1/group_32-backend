@@ -56,5 +56,5 @@ export const ComplainType = {
 };
 export const ComplainLevel = {
    LOW: "low",
-   HIGHT: "hight",
+   HIGH: "high",
 };
