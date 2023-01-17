@@ -108,27 +108,10 @@ const softDeleteBuildingById = async (req, res, next) => {
       );
    }
 };
-
-const getAllBuildings = async (req, res, next) => {
+const getBuildingList = async (req, res, next) => {
    try {
-      let buildings = await buildingService.getAllBuildings();
-      if (!buildings) buildings = [];
-      res.status(HttpStatus.OK).send(new SuccessResponse(buildings));
-   } catch (error) {
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
-         new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, error.message)
-      );
-   }
-};
-const getBuildingByFilterAndPaging = async (req, res, next) => {
-   try {
-      let { pageSize, pageNumber, keyword } = req.query;
-      let buildings = await buildingService.getBuildingByFilterAndPaging(
-         pageSize,
-         pageNumber,
-         keyword
-      );
-      return res.status(HttpStatus.OK).json(new SuccessResponse(buildings));
+      const buildingList = await buildingService.getBuildingList(req.query);
+      return res.status(HttpStatus.OK).json(new SuccessResponse(buildingList));
    } catch (error) {
       return res
          .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -137,11 +120,11 @@ const getBuildingByFilterAndPaging = async (req, res, next) => {
          );
    }
 };
+
 export {
    getBuildingById,
    createBuilding,
    updateBuilding,
    softDeleteBuildingById,
-   getAllBuildings,
-   getBuildingByFilterAndPaging,
+   getBuildingList,
 };

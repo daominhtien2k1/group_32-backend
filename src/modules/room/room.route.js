@@ -6,12 +6,7 @@ import { auth } from "../../middlewares/authenticate.js";
 import { checkUserRole } from "../../middlewares/authorize.js";
 import * as roomValidator from "./room.validator.js";
 const router = Router();
-router.get(
-   "/filter",
-   auth,
-   validate(roomValidator.getRoomByFilterAndPaging),
-   roomController.getRoomByFilterAndPaging
-);
+
 router.get(
    "/detail/:roomId",
    auth,
@@ -44,5 +39,11 @@ router.delete(
    checkUserRole(UserRole.ADMIN),
    validate(roomValidator.softDeleteById),
    roomController.softDeleteRoomById
+);
+router.get(
+   "/",
+   auth,
+   validate(roomValidator.getListRoom),
+   roomController.getListRoom
 );
 export default router;

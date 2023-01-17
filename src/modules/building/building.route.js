@@ -6,12 +6,7 @@ import { auth } from "../../middlewares/authenticate.js";
 import { checkUserRole } from "../../middlewares/authorize.js";
 import * as buildingValidator from "./building.validator.js";
 const router = Router();
-router.get(
-   "/filter",
-   auth,
-   validate(buildingValidator.getBuildingByFilterAndPaging),
-   buildingController.getBuildingByFilterAndPaging
-);
+
 router.get(
    "/:buildingId",
    auth,
@@ -25,7 +20,12 @@ router.post(
    validate(buildingValidator.create),
    buildingController.createBuilding
 );
-router.get("/", auth, buildingController.getAllBuildings);
+router.get(
+   "/",
+   auth,
+   validate(buildingValidator.getBuildingList),
+   buildingController.getBuildingList
+);
 router.put(
    "/:buildingId",
    auth,
@@ -37,7 +37,7 @@ router.delete(
    "/:buildingId",
    auth,
    checkUserRole(UserRole.ADMIN),
-   validate(buildingValidator.softDeleteByid),
+   validate(buildingValidator.softDeleteById),
    buildingController.softDeleteBuildingById
 );
 export default router;

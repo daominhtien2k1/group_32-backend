@@ -1,5 +1,7 @@
 import db from "../../../../models/index.cjs";
 import { softDeleteCondition } from "../../../constant.js";
+import Sequelize from "sequelize";
+const Op = Sequelize.Op;
 const Building = db.building;
 const Room = db.room;
 
@@ -99,51 +101,61 @@ const softDeleteRoomById = async (id) => {
    }
 };
 
-const getRoomByFilterAndPaging = async (
-   pageSize = 20,
-   pageNumber = 1,
-   keyword = ""
-) => {
+const getListRoom = async (query) => {
    try {
-      let totalRecords = 0;
-      let includeObj = {
-         limit: pageSize - 0,
-         offset: (pageNumber - 1) * pageSize,
-         raw: true,
-      };
-      if (keyword && keyword.trim() !== "") {
-         includeObj.where = {
+      const { page = 1, limit = 10, keyword = "", buildingId } = query;
+      let dbQuery = {};
+      if (keyword) {
+         dbQuery = {
+            ...dbQuery,
             [Op.or]: [
                {
                   name: {
                      [Op.like]: `%${keyword}%`,
                   },
                },
+               {
+                  capacity: {
+                     [Op.like]: `%${keyword}%`,
+                  },
+               },
+               {
+                  price: {
+                     [Op.like]: `%${keyword}%`,
+                  },
+               },
             ],
          };
-         totalRecords = await Room.count({
-            where: {
-               ...includeObj.where,
-            },
-         });
-      } else {
-         totalRecords = await Room.count();
       }
-      let rooms = await Room.findAll({ ...includeObj });
+      if (buildingId) {
+         dbQuery = {
+            ...dbQuery,
+            [Op.or]: [
+               {
+                  buildingId: {
+                     [Op.like]: `%${buildingId}%`,
+                  },
+               },
+            ],
+         };
+      }
 
-      return {
-         items: rooms,
-         totalItems: totalRecords,
-      };
+      const data = await Room.findAndCountAll({
+         limit: +limit || 1,
+         offset: +limit * (+page - 1),
+         order: [["createdAt", "DESC"]],
+         where: dbQuery,
+      });
+      return { items: data.rows, totalItems: data.count };
    } catch (error) {
       throw error;
    }
 };
-export default {
+export {
    createRoom,
    getRoomById,
    getAllRoomsByBuildingId,
    updateRoomById,
    softDeleteRoomById,
-   getRoomByFilterAndPaging,
+   getListRoom,
 };

@@ -154,15 +154,10 @@ const getAllRoomsByBuildingId = async (req, res, next) => {
       );
    }
 };
-const getRoomByFilterAndPaging = async (req, res, next) => {
+const getListRoom = async (req, res, next) => {
    try {
-      let { pageSize, pageNumber, keyword } = req.query;
-      let rooms = await roomService.getRoomByFilterAndPaging(
-         pageSize,
-         pageNumber,
-         keyword
-      );
-      return res.status(HttpStatus.OK).json(new SuccessResponse(rooms));
+      const roomList = await roomService.getListRoom(req.query);
+      return res.status(HttpStatus.OK).json(new SuccessResponse(roomList));
    } catch (error) {
       return res
          .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -177,5 +172,5 @@ export {
    updateRoom,
    softDeleteRoomById,
    getAllRoomsByBuildingId,
-   getRoomByFilterAndPaging,
+   getListRoom,
 };
