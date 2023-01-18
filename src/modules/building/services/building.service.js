@@ -1,5 +1,7 @@
 import db from "../../../../models/index.cjs";
 import { softDeleteCondition } from "../../../constant.js";
+import Sequelize from "sequelize";
+const Op = Sequelize.Op;
 const Building = db.building;
 const Room = db.room;
 const buildingAttribute = [
@@ -45,14 +47,6 @@ const getBuildingById = async (id) => {
    }
 };
 
-const getAllBuildings = async () => {
-   try {
-      return await Building.findAll();
-   } catch (error) {
-      throw error;
-   }
-};
-
 /**
  * Cập nhật thông tin tòa nhà
  * @param {*} updateBody
@@ -72,18 +66,6 @@ const updateBuildingById = async (buildingId, updateBody) => {
       throw error;
    }
 };
-
-// const getBuildingsByPaging = async (updateBody) => {
-//    try {
-//       return await Building.update(updateBody, {
-//          where: {
-//             id: updateBody.buildingId,
-//          },
-//       });
-//    } catch (error) {
-//       throw error;
-//    }
-// };
 
 /**
  * xóa mềm 1 tòa nhà theo id
@@ -105,20 +87,13 @@ const softDeleteBuildingById = async (id) => {
       throw error;
    }
 };
-const getBuildingByFilterAndPaging = async (
-   pageSize = 20,
-   pageNumber = 1,
-   keyword = ""
-) => {
+const getBuildingList = async (query) => {
    try {
-      let totalRecords = 0;
-      let includeObj = {
-         limit: pageSize - 0,
-         offset: (pageNumber - 1) * pageSize,
-         raw: true,
-      };
-      if (keyword && keyword.trim() !== "") {
-         includeObj.where = {
+      const { page = 1, limit = 10, keyword = "" } = query;
+      let dbQuery = {};
+      if (keyword) {
+         dbQuery = {
+            ...dbQuery,
             [Op.or]: [
                {
                   name: {
@@ -132,32 +107,24 @@ const getBuildingByFilterAndPaging = async (
                },
             ],
          };
-         totalRecords = await Building.count({
-            where: {
-               ...includeObj.where,
-            },
-         });
-      } else {
-         totalRecords = await Building.count();
       }
-      let buildings = await Building.findAll({ ...includeObj });
 
-      return {
-         items: buildings,
-         totalItems: totalRecords,
-         // pageSize,
-         // pageNumber,
-         // keyword,
-      };
+      const data = await Building.findAndCountAll({
+         limit: +limit || 1,
+         offset: +limit * (+page - 1),
+         order: [["createdAt", "DESC"]],
+         where: dbQuery,
+      });
+      return { items: data.rows, totalItems: data.count };
    } catch (error) {
       throw error;
    }
 };
+
 export {
    createBuilding,
    getBuildingById,
    updateBuildingById,
    softDeleteBuildingById,
-   getAllBuildings,
-   getBuildingByFilterAndPaging,
+   getBuildingList,
 };

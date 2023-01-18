@@ -41,19 +41,19 @@ const softDeleteById = {
       roomId: Joi.number().integer().required(),
    }),
 };
-const getRoomByFilterAndPaging = {
-   query: Joi.object().keys({
-      pageSize: Joi.number().integer().min(1).optional(),
-      pageNumber: Joi.number().integer().min(1).optional(),
-      keyword: Joi.string().optional().allow(""),
+const getListRoom = {
+   query: Joi.object({
+      page: Joi.number().positive(),
+      limit: Joi.number().positive(),
+      keyword: Joi.string().trim(),
+      buildingId: Joi.number().integer(),
    }),
 };
-
 export {
    create,
    update,
    getById,
    softDeleteById,
    getAllRoomsByBuildingId,
-   getRoomByFilterAndPaging,
+   getListRoom,
 };
