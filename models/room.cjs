@@ -12,14 +12,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false,
          },
-         capacity: {
+         roomCategoryId: {
             type: DataTypes.INTEGER,
             allowNull: false,
-         },
-         price: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-         },
+         }
       },
       {
          deletedAt: "deletedAt",

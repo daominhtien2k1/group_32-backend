@@ -1,7 +1,5 @@
 "use strict";
 
-const { hashString } = require("../src/middlewares/bcrypt.cjs");
-
 module.exports = (sequelize, DataTypes) => {
    const Building = sequelize.define(
       "Building",
@@ -14,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
          },
+         numberOfFloor: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+         }
       },
       {
          deletedAt: "deletedAt",
