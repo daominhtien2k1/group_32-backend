@@ -18,14 +18,14 @@ const createComplain = async (createBody) => {
 };
 const getComplainById = async (id) => {
    try {
-      return await Complain.findOne({ id: id });
+      return await Complain.findOne({ where: { id: id } });
    } catch (error) {
       throw error;
    }
 };
 const getComplainByStudentId = async (studentId) => {
    try {
-      return await Complain.findAll({ studentId: studentId });
+      return await Complain.findAll({ where: { studentId: studentId } });
    } catch (error) {
       throw error;
    }
