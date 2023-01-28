@@ -43,10 +43,13 @@ Object.keys(db).forEach((modelName) => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-db.user = require("./user.cjs")(sequelize, Sequelize);
-db.token = require("./token.cjs")(sequelize, Sequelize);
+db.billing = require("./billing.cjs")(sequelize, Sequelize);
 db.building = require("./building.cjs")(sequelize, Sequelize);
-db.room = require("./room.cjs")(sequelize, Sequelize);
-db.request = require("./request.cjs")(sequelize, Sequelize);
 db.complain = require("./complain.cjs")(sequelize, Sequelize);
+db.contract = require("./contract.cjs")(sequelize, Sequelize);
+db.request = require("./request.cjs")(sequelize, Sequelize);
+db.roomCategory = require("./room-category.cjs")(sequelize, Sequelize);
+db.room = require("./room.cjs")(sequelize, Sequelize);
+db.token = require("./token.cjs")(sequelize, Sequelize);
+db.user = require("./user.cjs")(sequelize, Sequelize);
 module.exports = db;
