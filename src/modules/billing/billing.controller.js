@@ -26,6 +26,41 @@ const getBillingList = async (req, res) => {
     }
 }
 
+const updateBilling = async (req, res) => {
+    try {
+        const body = req.body;
+        const billingId = req.params.id;
+        const updatedBilling = await billingService.updateBillingById(billingId,
+            body)
+        return res
+            .status(HttpStatus.OK)
+            .json(new SuccessResponse(updatedBilling));
+    } catch (error) {
+        return res
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .json(
+                new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, error.message)
+            );
+    }
+}
+
+const deleteBilling = async (req, res) => {
+    try {
+        await billingService.deleteBilling(req.params.id);
+        return res
+            .status(HttpStatus.OK)
+            .json(new SuccessResponse({ id: req.params.id }));
+    } catch (error) {
+        return res
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .json(
+                new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, error.message)
+            );
+    }
+}
+
 export default {
-    getBillingList
+    getBillingList,
+    updateBilling,
+    deleteBilling
 }
