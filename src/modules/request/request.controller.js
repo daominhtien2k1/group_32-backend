@@ -31,6 +31,24 @@ const createRequest = async (req, res) => {
             })
          );
       }
+      // đếm số lượng request pending và số user đã được vào trong phòng
+      // nếu lớn hơn hoặc bằng capacity thì không cho đăng ký nữa
+      let numbersRequest = await requestService.getListRequestPendingByRoomId(
+         req.body.roomId
+      );
+      let numberUserByRoomId = await userService.getUserByRoomId(
+         req.body.roomId
+      );
+      let capacityRoom =
+         (await roomService.getRoomById(req.body.roomId)?.RoomCategory
+            ?.capacity) ?? 0;
+      if (capacityRoom <= numberUserByRoomId + numbersRequest) {
+         return res
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .json(
+               new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "full slot")
+            );
+      }
 
       const newRequest = await requestService.insertRequest({
          ...req.body,
@@ -131,14 +149,12 @@ const updateRequestStatus = async (req, res) => {
          );
       }
       if (isRequestExisted.status !== RequestStatus.PENDING) {
-         return res
-            .status(HttpStatus.FORBIDDEN)
-            .json(
-               new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, {
-                  key: "status",
-                  message: "Cannot change status after reject or accept",
-               })
-            );
+         return res.status(HttpStatus.FORBIDDEN).json(
+            new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, {
+               key: "status",
+               message: "Cannot change status after reject or accept",
+            })
+         );
       }
       const updatedRequest = await requestService.updateRequestById(
          req.params.id,
@@ -160,7 +176,7 @@ const updateRequestStatus = async (req, res) => {
             startDate: new Date(),
             endDate: new Date(),
             status: ContractStatus.PENDING,
-         })
+         });
       }
       return res
          .status(HttpStatus.OK)

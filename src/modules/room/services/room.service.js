@@ -58,10 +58,9 @@ const getRoomById = async (roomId) => {
 
 const getAllRoomsByBuildingId = async (buildingId) => {
    try {
-      return await Room.findAll({
-         where: {
-            buildingId,
-         },
+      let data = await Room.findAndCountAll({
+         order: [["createdAt", "DESC"]],
+         where: { buildingId: buildingId },
          include: [
             {
                model: db.roomCategory,
@@ -69,6 +68,7 @@ const getAllRoomsByBuildingId = async (buildingId) => {
             },
          ],
       });
+      return { items: data.rows, totalItems: data.count };
    } catch (error) {
       throw error;
    }
@@ -163,7 +163,7 @@ const getListRoom = async (query) => {
          // limit: +limit || 1,
          // offset: +limit * (+page - 1),
          order: [["createdAt", "DESC"]],
-         where: dbQuery,
+         //where: dbQuery,
          include: [
             {
                model: db.roomCategory,
