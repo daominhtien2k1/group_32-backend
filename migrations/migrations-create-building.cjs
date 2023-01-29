@@ -18,6 +18,7 @@ module.exports = {
          },
          numberOfFloor: {
             type: Sequelize.INTEGER,
+            default: 0,
             allowNull: false
          },
          createdAt: {

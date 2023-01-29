@@ -12,6 +12,7 @@ import buildingRoute from "./modules/building/building.route.js";
 import roomRoute from "./modules/room/room.route.js";
 import requestRoute from "./modules/request/request.route.js";
 import complainRoute from "./modules/complain/complain.route.js";
+import contractRoute from "./modules/contract/contract.route.js";
 app.use(morgan("dev"));
 app.use(cors());
 app.use(json());
@@ -22,6 +23,7 @@ app.use("/api/buildings", buildingRoute);
 app.use("/api/rooms", roomRoute);
 app.use("/api/request", requestRoute);
 app.use("/api/complains", complainRoute);
+app.use("/api/contract", contractRoute);
 app.use((err, req, res, next) => {
    res.status(err.status || 500).send(err.message);
 });

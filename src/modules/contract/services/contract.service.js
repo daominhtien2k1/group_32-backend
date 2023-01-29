@@ -1,5 +1,13 @@
 import db from "../../../../models/index.cjs";
-const Contract = db.Contract
+const Contract = db.contract
+
+const getContractById = async (id) => {
+    try {
+        return await Contract.findOne({ where: { id } })
+    } catch (error) {
+        throw error;
+    }
+}
 
 const insertContract = async (insertContractBody) => {
     try {
@@ -22,7 +30,45 @@ const updateContractById = async (id, updateBody) => {
     }
 };
 
+const getContractListByStudentId = async (studentId) => {
+    try {
+        const data = await Contract.findAndCountAll({
+            where: {
+                studentId,
+            }
+        });
+        return { items: data.rows, totalItems: data.count }
+    } catch (error) {
+        throw error;
+    }
+}
+
+const getContractList = async () => {
+    try {
+        const data = await Contract.findAndCountAll();
+        return { items: data.rows, totalItems: data.count }
+    } catch (error) {
+        throw error;
+    }
+}
+
+const deleteContractById = async (id) => {
+    try {
+        return await Contract.destroy({
+            where: {
+                id,
+            },
+        });
+    } catch (error) {
+        throw error;
+    }
+}
+
 export default {
+    getContractById,
     insertContract,
-    updateContractById
+    updateContractById,
+    getContractList,
+    deleteContractById,
+    getContractListByStudentId,
 }
