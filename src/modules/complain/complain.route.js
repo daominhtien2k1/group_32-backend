@@ -19,7 +19,7 @@ router.get(
    "/",
    auth,
    checkUserRole([UserRole.ADMIN]),
-   validate(complainValidator.getComplainList),
+   //validate(complainValidator.getComplainList),
    complainController.getComplainList
 );
 router.put(

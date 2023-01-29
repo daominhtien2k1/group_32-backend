@@ -18,51 +18,73 @@ const createComplain = async (createBody) => {
 };
 const getComplainById = async (id) => {
    try {
-      return await Complain.findOne({ where: { id: id } });
+      return await Complain.findOne({
+         where: { id: id },
+         include: [
+            {
+               model: db.user,
+               attributes: ["name", "studentCode"],
+            },
+         ],
+      });
    } catch (error) {
       throw error;
    }
 };
 const getComplainByStudentId = async (studentId) => {
    try {
-      return await Complain.findAll({ where: { studentId: studentId } });
+      return await Complain.findAll({
+         where: { studentId: studentId },
+         include: [
+            {
+               model: db.user,
+               attributes: ["name", "studentCode"],
+            },
+         ],
+      });
    } catch (error) {
       throw error;
    }
 };
 const getComplainList = async (query) => {
    try {
-      const {
-         page = 1,
-         limit = 10,
-         type = "",
-         level = "",
-         status = "",
-      } = query;
-      let dbQuery = {};
-      if (type) {
-         dbQuery = {
-            ...dbQuery,
-            type,
-         };
-      }
-      if (level) {
-         dbQuery = {
-            ...dbQuery,
-            level,
-         };
-      }
-      if (status) {
-         dbQuery = {
-            ...dbQuery,
-            status,
-         };
-      }
+      // const {
+      //    page = 1,
+      //    limit = 10,
+      //    type = "",
+      //    level = "",
+      //    status = "",
+      // } = query;
+      // let dbQuery = {};
+      // if (type) {
+      //    dbQuery = {
+      //       ...dbQuery,
+      //       type,
+      //    };
+      // }
+      // if (level) {
+      //    dbQuery = {
+      //       ...dbQuery,
+      //       level,
+      //    };
+      // }
+      // if (status) {
+      //    dbQuery = {
+      //       ...dbQuery,
+      //       status,
+      //    };
+      // }
       const data = await Complain.findAndCountAll({
-         limit: +limit || 1,
-         offset: +limit * (+page - 1),
-         order: [["createdAt", "DESC"]],
-         where: dbQuery,
+         // limit: +limit || 1,
+         // offset: +limit * (+page - 1),
+         // order: [["createdAt", "DESC"]],
+         // where: dbQuery,
+         include: [
+            {
+               model: db.user,
+               attributes: ["name", "studentCode"],
+            },
+         ],
       });
       return { items: data.rows, totalItems: data.count };
    } catch (error) {

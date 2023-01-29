@@ -7,6 +7,10 @@ module.exports = (sequelize, DataTypes) => {
          studentId: {
             type: DataTypes.STRING,
             allowNull: false,
+            references: {
+               model: "user",
+               key: "id",
+            },
          },
          type: {
             type: DataTypes.STRING,
@@ -36,6 +40,10 @@ module.exports = (sequelize, DataTypes) => {
    );
    Complain.associate = function (models) {
       // associations can be defined here
+      Complain.belongsTo(models.user, {
+         foreignKey: "studentId",
+         targetKey: "id",
+      });
    };
    return Complain;
 };

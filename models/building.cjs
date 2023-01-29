@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
          numberOfFloor: {
             type: DataTypes.INTEGER,
             allowNull: false,
-         }
+         },
       },
       {
          deletedAt: "deletedAt",
@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
    );
    Building.associate = function (models) {
       // associations can be defined here
+      Building.hasMany(models.room, {
+         foreignKey: "buildingId",
+         sourceKey: "id",
+      });
    };
    return Building;
 };
