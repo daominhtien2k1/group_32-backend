@@ -63,8 +63,10 @@ const updateBuilding = async (req, res, next) => {
          req.params.buildingId,
          req.body
       );
-      if (updateRow > 0) {
-         res.status(HttpStatus.OK).send(new SuccessResponse(building.id));
+      if (updateRow) {
+         res.status(HttpStatus.OK).send(
+            new SuccessResponse(req.params.buildingId)
+         );
       } else {
          res.status(HttpStatus.NOT_FOUND).json(
             new ErrorResponse(

@@ -12,8 +12,8 @@ const update = {
       buildingId: Joi.required(),
    }),
    body: Joi.object({
-      name: Joi.string().required().trim(),
-      address: Joi.string().required().trim(),
+      name: Joi.string().trim().required(),
+      address: Joi.string().trim().required(),
       numberOfFloor: Joi.number().positive().required(),
    }),
 };
