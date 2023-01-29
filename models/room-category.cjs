@@ -29,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
    );
    RoomCategory.associate = function (models) {
       // associations can be defined here
+      RoomCategory.hasMany(models.Room, {
+         as: "rooms",
+         foreignKey: "roomCategoryId",
+      });
    };
    return RoomCategory;
 };

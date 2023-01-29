@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
          roomCategoryId: {
             type: DataTypes.INTEGER,
             allowNull: false,
-         }
+         },
       },
       {
          deletedAt: "deletedAt",
@@ -25,6 +25,11 @@ module.exports = (sequelize, DataTypes) => {
    );
    Room.associate = function (models) {
       // associations can be defined here
+      Room.belongsTo(models.RoomCategory, {
+         as: "roomCategory",
+         foreignKey: "roomCategoryId",
+         targetKey: "id",
+      });
    };
    return Room;
 };

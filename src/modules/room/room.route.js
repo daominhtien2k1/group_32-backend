@@ -27,7 +27,7 @@ router.get(
    roomController.getAllRoomsByBuildingId
 );
 router.put(
-   "/:buildingId/:roomId",
+   "/:roomId",
    auth,
    checkUserRole(UserRole.ADMIN),
    validate(roomValidator.update),

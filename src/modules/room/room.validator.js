@@ -7,23 +7,17 @@ const create = {
    body: Joi.object({
       name: Joi.string().trim().required(),
       buildingId: Joi.number().integer().required(),
-      capacity: Joi.number().integer().required(),
-      price: Joi.number().integer().required(),
-      userId: Joi.required(),
-      role: Joi.required(),
+      roomCategoryId: Joi.number().integer().required(),
    }),
 };
 const update = {
    params: Joi.object({
-      buildingId: Joi.number().integer().required(),
       roomId: Joi.number().integer().required(),
    }),
    body: Joi.object({
       name: Joi.string().trim().required(),
-      capacity: Joi.number().integer().required(),
-      price: Joi.number().integer().required(),
-      userId: Joi.required(),
-      role: Joi.required(),
+      buildingId: Joi.number().integer().required(),
+      roomCategoryId: Joi.number().integer().required(),
    }),
 };
 const getById = {

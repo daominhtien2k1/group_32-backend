@@ -1,6 +1,7 @@
 import { HttpStatus } from "../../constant.js";
 import * as roomService from "./services/room.service.js";
 import { getBuildingById } from "../building/services/building.service.js";
+import { getRoomCategoryById } from "../room-category/services/room-category.service.js";
 import ErrorResponse from "../../utils/ErrorResponse.js";
 import SuccessResponse from "../../utils/SuccessResponse.js";
 
@@ -15,16 +16,18 @@ const getRoomById = async (req, res, next) => {
    try {
       const room = await roomService.getRoomById(req.params.roomId);
       if (room) {
-         res.status(HttpStatus.OK).send(new SuccessResponse(room));
+         return res.status(HttpStatus.OK).json(new SuccessResponse(room));
       } else {
-         res.status(HttpStatus.NOT_FOUND).json(
-            new ErrorResponse(HttpStatus.BAD_REQUEST, "Not found room")
-         );
+         return res
+            .status(HttpStatus.NOT_FOUND)
+            .json(new ErrorResponse(HttpStatus.BAD_REQUEST, "Not found room"));
       }
    } catch (error) {
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
-         new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, error.message)
-      );
+      return res
+         .status(HttpStatus.INTERNAL_SERVER_ERROR)
+         .json(
+            new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, error.message)
+         );
    }
 };
 
@@ -38,6 +41,7 @@ const getRoomById = async (req, res, next) => {
 const createRoom = async (req, res) => {
    try {
       const building = await getBuildingById(req.params.buildingId);
+      const roomCategory = await getRoomCategoryById(req.body.roomCategoryId);
       if (!building) {
          return res
             .status(HttpStatus.NOT_FOUND)
@@ -45,6 +49,16 @@ const createRoom = async (req, res) => {
                new ErrorResponse(
                   HttpStatus.BAD_REQUEST,
                   "Not found building to create room"
+               )
+            );
+      }
+      if (!roomCategory) {
+         return res
+            .status(HttpStatus.NOT_FOUND)
+            .json(
+               new ErrorResponse(
+                  HttpStatus.BAD_REQUEST,
+                  "Not found room category to create room"
                )
             );
       }
@@ -72,31 +86,9 @@ const createRoom = async (req, res) => {
  */
 const updateRoom = async (req, res, next) => {
    try {
-      const building = await getBuildingById(req.params.buildingId);
-      if (building) {
-         const room = await roomService.getRoomById(req.params.roomId);
-         if (room) {
-            const rowAffect = await roomService.updateRoomById(
-               req.params.buildingId,
-               req.params.roomId,
-               req.body
-            );
-            if (rowAffect > 0) {
-               res.status(HttpStatus.OK).send(
-                  new SuccessResponse(req.params.roomId)
-               );
-            }
-         } else {
-            return res
-               .status(HttpStatus.NOT_FOUND)
-               .json(
-                  new ErrorResponse(
-                     HttpStatus.BAD_REQUEST,
-                     "Not found room to update"
-                  )
-               );
-         }
-      } else {
+      const building = await getBuildingById(req.body.buildingId);
+      const roomCategory = await getRoomCategoryById(req.body.roomCategoryId);
+      if (!building) {
          return res
             .status(HttpStatus.NOT_FOUND)
             .json(
@@ -106,10 +98,49 @@ const updateRoom = async (req, res, next) => {
                )
             );
       }
+      if (!roomCategory) {
+         return res
+            .status(HttpStatus.NOT_FOUND)
+            .json(
+               new ErrorResponse(
+                  HttpStatus.BAD_REQUEST,
+                  "Not found room category to create room"
+               )
+            );
+      }
+      const room = await roomService.getRoomById(req.params.roomId);
+      if (room) {
+         const rowAffect = await roomService.updateRoomById(
+            req.params.buildingId,
+            req.params.roomId,
+            req.body
+         );
+         if (rowAffect > 0) {
+            return res
+               .status(HttpStatus.OK)
+               .json(new SuccessResponse(req.params.roomId));
+         }
+         return res
+            .status(HttpStatus.BAD_REQUEST)
+            .json(
+               new ErrorResponse(HttpStatus.BAD_REQUEST, "update room failed")
+            );
+      } else {
+         return res
+            .status(HttpStatus.NOT_FOUND)
+            .json(
+               new ErrorResponse(
+                  HttpStatus.BAD_REQUEST,
+                  "Not found room to update"
+               )
+            );
+      }
    } catch (error) {
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
-         new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, error.message)
-      );
+      return res
+         .status(HttpStatus.INTERNAL_SERVER_ERROR)
+         .json(
+            new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, error.message)
+         );
    }
 };
 
@@ -123,11 +154,15 @@ const updateRoom = async (req, res, next) => {
 const softDeleteRoomById = async (req, res, next) => {
    try {
       await roomService.softDeleteRoomById(req.params.roomId);
-      res.status(HttpStatus.OK).send(new SuccessResponse(req.params.roomId));
+      return res
+         .status(HttpStatus.OK)
+         .json(new SuccessResponse(req.params.roomId));
    } catch (error) {
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
-         new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, error.message)
-      );
+      return res
+         .status(HttpStatus.INTERNAL_SERVER_ERROR)
+         .json(
+            new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, error.message)
+         );
    }
 };
 
@@ -139,7 +174,7 @@ const getAllRoomsByBuildingId = async (req, res, next) => {
             req.params.buildingId
          );
          if (!rooms) rooms = [];
-         res.status(HttpStatus.OK).send(new SuccessResponse(rooms));
+         return res.status(HttpStatus.OK).json(new SuccessResponse(rooms));
       } else {
          return res
             .status(HttpStatus.NOT_FOUND)
@@ -148,9 +183,11 @@ const getAllRoomsByBuildingId = async (req, res, next) => {
             );
       }
    } catch (error) {
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json(
-         new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, error.message)
-      );
+      return res
+         .status(HttpStatus.INTERNAL_SERVER_ERROR)
+         .json(
+            new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, error.message)
+         );
    }
 };
 const getListRoom = async (req, res, next) => {
