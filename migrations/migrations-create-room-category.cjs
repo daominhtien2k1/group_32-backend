@@ -20,15 +20,7 @@ module.exports = {
             type: Sequelize.INTEGER,
             allowNull: false,
          },
-         pricePerOneMonth: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-         },
-         pricePerThreeMonth: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-         },
-         pricePerSixMonth: {
+         priceRoom: {
             type: Sequelize.INTEGER,
             allowNull: false,
          },

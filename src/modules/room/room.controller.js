@@ -38,14 +38,7 @@ const getRoomById = async (req, res, next) => {
 const createRoom = async (req, res) => {
    try {
       const building = await getBuildingById(req.params.buildingId);
-      if (building) {
-         const newRoom = await roomService.createRoom(
-            req.params.buildingId,
-            req.body
-         );
-
-         return res.status(HttpStatus.OK).send(new SuccessResponse(newRoom.id));
-      } else {
+      if (!building) {
          return res
             .status(HttpStatus.NOT_FOUND)
             .json(
@@ -55,6 +48,12 @@ const createRoom = async (req, res) => {
                )
             );
       }
+      const newRoom = await roomService.createRoom(
+         req.params.buildingId,
+         req.body
+      );
+
+      return res.status(HttpStatus.OK).send(new SuccessResponse(newRoom.id));
    } catch (error) {
       return res
          .status(HttpStatus.INTERNAL_SERVER_ERROR)

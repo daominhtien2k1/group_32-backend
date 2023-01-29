@@ -1,4 +1,5 @@
 import {
+   ContractStatus,
    HttpStatus,
    RequestStatus,
    RequestType,
@@ -9,6 +10,8 @@ import requestService from "./services/request.service.js";
 import * as roomService from "../room/services/room.service.js";
 import ErrorResponse from "../../utils/ErrorResponse.js";
 import userService from "../user/services/user.service.js";
+import contractService from "../contract/services/contract.service.js";
+import roomCategoryService from "../room-category/services/room-category.service.js";
 const createRequest = async (req, res) => {
    try {
       if (req.user.roomId && req.body.type === RequestType.ROOM) {
@@ -154,9 +157,14 @@ const updateRequestStatus = async (req, res) => {
          req.body
       );
       if (req.body.status === RequestStatus.ACCEPTED) {
-         await userService.updateUserById(isRequestExisted.studentId, {
+         const room = await roomService.getRoomById(isRequestExisted.roomId);
+         const roomCategory = await roomCategoryService.getRoomCategoryById(room.categoryId);
+         await contractService.insertContract({
+            id: isRequestExisted.studentId,
             roomId: isRequestExisted.roomId,
-         });
+            price: roomCategory.pricePerOneMonth,
+            status: ContractStatus.PENDING,
+         })
       }
       return res
          .status(HttpStatus.OK)
