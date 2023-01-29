@@ -52,55 +52,59 @@ const getUserByEmail = async (email) => {
 
 const getUserList = async (query) => {
    try {
-      const {
-         page = 1,
-         limit = 10,
-         keyword = "",
-         role = [],
-         status = ""
-      } = query
-      let dbQuery = {}
-      if (keyword) {
-         dbQuery = {
-            ...dbQuery,
-            [Op.or]: [
-               {
-                  name: {
-                     [Op.like]: `%${keyword}%`,
-                  },
-               },
-               {
-                  email: {
-                     [Op.like]: `%${keyword}%`,
-                  },
-               },
-            ],
-         }
-      }
+      // const {
+      //    page = 1,
+      //    limit = 10,
+      //    keyword = "",
+      //    role = [],
+      //    status = ""
+      // } = query
+      // let dbQuery = {}
+      // if (keyword) {
+      //    dbQuery = {
+      //       ...dbQuery,
+      //       [Op.or]: [
+      //          {
+      //             name: {
+      //                [Op.like]: `%${keyword}%`,
+      //             },
+      //          },
+      //          {
+      //             email: {
+      //                [Op.like]: `%${keyword}%`,
+      //             },
+      //          },
+      //       ],
+      //    }
+      // }
 
-      if (role.length) {
-         dbQuery = {
-            ...dbQuery,
-            role: {
-               [Op.in]: role
-            }
-         }
-      }
+      // if (role.length) {
+      //    dbQuery = {
+      //       ...dbQuery,
+      //       role: {
+      //          [Op.in]: role
+      //       }
+      //    }
+      // }
 
-      if (status.length) {
-         dbQuery = {
-            ...dbQuery,
-            status: {
-               [Op.in]: status
-            }
-         }
-      }
+      // if (status.length) {
+      //    dbQuery = {
+      //       ...dbQuery,
+      //       status: {
+      //          [Op.in]: status
+      //       }
+      //    }
+      // }
+      // const data = await User.findAndCountAll({
+      //    limit: +limit || 1,
+      //    offset: (+limit) * (+page - 1),
+      //    order: [['createdAt', 'DESC']],
+      //    attributes: { exclude: ['password'] },
+      //    where: dbQuery
+      // })
+      // return { items: data.rows, totalItems: data.count }
       const data = await User.findAndCountAll({
-         limit: +limit || 1,
-         offset: (+limit) * (+page - 1),
-         order: [['createdAt', 'DESC']],
          attributes: { exclude: ['password'] },
-         where: dbQuery
       })
       return { items: data.rows, totalItems: data.count }
    } catch (error) {

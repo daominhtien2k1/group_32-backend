@@ -142,29 +142,35 @@ const updateRequestStatus = async (req, res) => {
                })
             );
       }
-      if (isRequestExisted.status !== RequestStatus.PENDING) {
-         return res
-            .status(HttpStatus.FORBIDDEN)
-            .json(
-               new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, {
-                  key: "status",
-                  message: "Cannot change status after reject or accept",
-               })
-            );
-      }
+      // if (isRequestExisted.status !== RequestStatus.PENDING) {
+      //    return res
+      //       .status(HttpStatus.FORBIDDEN)
+      //       .json(
+      //          new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, {
+      //             key: "status",
+      //             message: "Cannot change status after reject or accept",
+      //          })
+      //       );
+      // }
       const updatedRequest = await requestService.updateRequestById(
          req.params.id,
          req.body
       );
       if (req.body.status === RequestStatus.ACCEPTED) {
          const room = await roomService.getRoomById(isRequestExisted.roomId);
-         const roomCategory = await roomCategoryService.getRoomCategoryById(room.categoryId);
-         await contractService.insertContract({
-            id: isRequestExisted.studentId,
+         const roomCategory = await roomCategoryService.getRoomCategoryById(room.roomCategoryId);
+         const newContract = await contractService.insertContract({
+            studentId: isRequestExisted.studentId,
             roomId: isRequestExisted.roomId,
-            price: roomCategory.pricePerOneMonth,
+            priceRoom: roomCategory.priceRoom,
+            priceInternet: 0,
+            priceWater: 0,
+            priceElectric: 0,
+            startDate: new Date(),
+            endDate: new Date(),
             status: ContractStatus.PENDING,
          })
+         console.log(newContract);
       }
       return res
          .status(HttpStatus.OK)
