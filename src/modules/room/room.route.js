@@ -40,10 +40,5 @@ router.delete(
    validate(roomValidator.softDeleteById),
    roomController.softDeleteRoomById
 );
-router.get(
-   "/",
-   auth,
-   validate(roomValidator.getListRoom),
-   roomController.getListRoom
-);
+router.get("/", auth, roomController.getListRoom);
 export default router;

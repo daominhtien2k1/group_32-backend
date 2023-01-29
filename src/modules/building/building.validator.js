@@ -4,8 +4,7 @@ const create = {
    body: Joi.object({
       name: Joi.string().trim().required(),
       address: Joi.string().trim().required(),
-      userId: Joi.required(),
-      role: Joi.required(),
+      numberOfFloor: Joi.number().positive().required(),
    }),
 };
 const update = {
@@ -15,8 +14,7 @@ const update = {
    body: Joi.object({
       name: Joi.string().required().trim(),
       address: Joi.string().required().trim(),
-      userId: Joi.required(),
-      role: Joi.required(),
+      numberOfFloor: Joi.number().positive().required(),
    }),
 };
 const getById = {

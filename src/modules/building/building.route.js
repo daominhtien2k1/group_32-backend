@@ -20,12 +20,7 @@ router.post(
    validate(buildingValidator.create),
    buildingController.createBuilding
 );
-router.get(
-   "/",
-   auth,
-   validate(buildingValidator.getBuildingList),
-   buildingController.getBuildingList
-);
+router.get("/", auth, buildingController.getBuildingList);
 router.put(
    "/:buildingId",
    auth,
