@@ -1,33 +1,24 @@
 import Joi from 'joi';
-import { ContractStatus } from '../../constant.js';
-const updateContract = {
+const updateBilling = {
     body: Joi.object({
         priceRoom: Joi.number().positive().required(),
         priceInternet: Joi.number().positive().required(),
         priceElectric: Joi.number().positive().required(),
         priceWater: Joi.number().positive().required(),
         priceParking: Joi.number().positive(),
-    }),
-    params: Joi.object({
-        id: Joi.number().positive().required()
-    }),
-}
-const updateContractStatus = {
-    body: Joi.object({
-        status: Joi.string().valid(...Object.values(ContractStatus)).required(),
+        isPaid: Joi.boolean().required(),
     }),
     params: Joi.object({
         id: Joi.number().positive().required()
     }),
 }
 
-const deleteContract = {
+const deleteBilling = {
     params: Joi.object({
         id: Joi.number().positive().required()
     }),
 }
 export default {
-    updateContract,
-    updateContractStatus,
-    deleteContract
+    updateBilling,
+    deleteBilling
 }

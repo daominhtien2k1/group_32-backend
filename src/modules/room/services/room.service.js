@@ -114,46 +114,54 @@ const softDeleteRoomById = async (id) => {
 
 const getListRoom = async (query) => {
    try {
-      const { page = 1, limit = 10, keyword = "", buildingId } = query;
-      let dbQuery = {};
-      if (keyword) {
-         dbQuery = {
-            ...dbQuery,
-            [Op.or]: [
-               {
-                  name: {
-                     [Op.like]: `%${keyword}%`,
-                  },
-               },
-               {
-                  capacity: {
-                     [Op.like]: `%${keyword}%`,
-                  },
-               },
-               {
-                  price: {
-                     [Op.like]: `%${keyword}%`,
-                  },
-               },
-            ],
-         };
-      }
-      if (buildingId) {
-         dbQuery = {
-            ...dbQuery,
-            [Op.or]: [
-               {
-                  buildingId: {
-                     [Op.like]: `%${buildingId}%`,
-                  },
-               },
-            ],
-         };
-      }
+      // const { page = 1, limit = 10, keyword = "", buildingId } = query;
+      // let dbQuery = {};
+      // if (keyword) {
+      //    dbQuery = {
+      //       ...dbQuery,
+      //       [Op.or]: [
+      //          {
+      //             name: {
+      //                [Op.like]: `%${keyword}%`,
+      //             },
+      //          },
+      //          {
+      //             capacity: {
+      //                [Op.like]: `%${keyword}%`,
+      //             },
+      //          },
+      //          {
+      //             price: {
+      //                [Op.like]: `%${keyword}%`,
+      //             },
+      //          },
+      //       ],
+      //    };
+      // }
+      // if (buildingId) {
+      //    dbQuery = {
+      //       ...dbQuery,
+      //       [Op.or]: [
+      //          {
+      //             buildingId: {
+      //                [Op.like]: `%${buildingId}%`,
+      //             },
+      //          },
+      //       ],
+      //    };
+      // }
+
+      // const data = await Room.findAndCountAll({
+      //    limit: +limit || 1,
+      //    offset: +limit * (+page - 1),
+      //    order: [["createdAt", "DESC"]],
+      //    where: dbQuery,
+      // });
+      // const data = await Room.findAndCountAll();
 
       const data = await Room.findAndCountAll({
-         limit: +limit || 1,
-         offset: +limit * (+page - 1),
+         // limit: +limit || 1,
+         // offset: +limit * (+page - 1),
          order: [["createdAt", "DESC"]],
          where: dbQuery,
          include: [

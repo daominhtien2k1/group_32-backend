@@ -130,16 +130,16 @@ const updateRequestStatus = async (req, res) => {
             })
          );
       }
-      // if (isRequestExisted.status !== RequestStatus.PENDING) {
-      //    return res
-      //       .status(HttpStatus.FORBIDDEN)
-      //       .json(
-      //          new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, {
-      //             key: "status",
-      //             message: "Cannot change status after reject or accept",
-      //          })
-      //       );
-      // }
+      if (isRequestExisted.status !== RequestStatus.PENDING) {
+         return res
+            .status(HttpStatus.FORBIDDEN)
+            .json(
+               new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, {
+                  key: "status",
+                  message: "Cannot change status after reject or accept",
+               })
+            );
+      }
       const updatedRequest = await requestService.updateRequestById(
          req.params.id,
          req.body
@@ -156,11 +156,11 @@ const updateRequestStatus = async (req, res) => {
             priceInternet: 0,
             priceWater: 0,
             priceElectric: 0,
+            isPaid: false,
             startDate: new Date(),
             endDate: new Date(),
             status: ContractStatus.PENDING,
-         });
-         console.log(newContract);
+         })
       }
       return res
          .status(HttpStatus.OK)

@@ -9,6 +9,19 @@ const getContractById = async (id) => {
     }
 }
 
+const getContractListByStatus = async (status) => {
+    try {
+        const data = await Contract.findAndCountAll({
+            where: {
+                status,
+            }
+        });
+        return { items: data.rows, totalItems: data.count }
+    } catch (error) {
+        throw error;
+    }
+}
+
 const insertContract = async (insertContractBody) => {
     try {
         const newContract = await Contract.create(insertContractBody);
@@ -20,11 +33,12 @@ const insertContract = async (insertContractBody) => {
 
 const updateContractById = async (id, updateBody) => {
     try {
-        return await Contract.update(updateBody, {
+        await Contract.update(updateBody, {
             where: {
                 id,
             },
         });
+        return await getContractById(id)
     } catch (error) {
         throw error;
     }
@@ -71,4 +85,5 @@ export default {
     getContractList,
     deleteContractById,
     getContractListByStudentId,
+    getContractListByStatus
 }
