@@ -11,29 +11,25 @@ import * as roomService from "../room/services/room.service.js";
 import ErrorResponse from "../../utils/ErrorResponse.js";
 import userService from "../user/services/user.service.js";
 import contractService from "../contract/services/contract.service.js";
-import roomCategoryService from "../room-category/services/room-category.service.js";
+import * as roomCategoryService from "../room-category/services/room-category.service.js";
 const createRequest = async (req, res) => {
    try {
       if (req.user.roomId && req.body.type === RequestType.ROOM) {
-         return res
-            .status(HttpStatus.BAD_REQUEST)
-            .json(
-               new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, {
-                  key: "roomId",
-                  message: "Student already have room",
-               })
-            );
+         return res.status(HttpStatus.BAD_REQUEST).json(
+            new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, {
+               key: "roomId",
+               message: "Student already have room",
+            })
+         );
       }
       const isRoomExisted = await roomService.getRoomById(req.body.roomId);
       if (!isRoomExisted) {
-         return res
-            .status(HttpStatus.BAD_REQUEST)
-            .json(
-               new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, {
-                  key: "roomId",
-                  message: "Room not exist",
-               })
-            );
+         return res.status(HttpStatus.BAD_REQUEST).json(
+            new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, {
+               key: "roomId",
+               message: "Room not exist",
+            })
+         );
       }
 
       const newRequest = await requestService.insertRequest({
@@ -81,35 +77,29 @@ const studentUpdateRequest = async (req, res) => {
          req.params.id
       );
       if (!isRequestExisted || isRequestExisted.studentId !== req.user.id) {
-         return res
-            .status(HttpStatus.BAD_REQUEST)
-            .json(
-               new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, {
-                  key: "id",
-                  message: "Request not exist",
-               })
-            );
+         return res.status(HttpStatus.BAD_REQUEST).json(
+            new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, {
+               key: "id",
+               message: "Request not exist",
+            })
+         );
       }
       if (isRequestExisted.status !== RequestStatus.PENDING) {
-         return res
-            .status(HttpStatus.FORBIDDEN)
-            .json(
-               new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, {
-                  key: "roomId",
-                  message: "Cannot update after reject or accept",
-               })
-            );
+         return res.status(HttpStatus.FORBIDDEN).json(
+            new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, {
+               key: "roomId",
+               message: "Cannot update after reject or accept",
+            })
+         );
       }
       const isRoomExisted = await roomService.getRoomById(req.body.roomId);
       if (!isRoomExisted) {
-         return res
-            .status(HttpStatus.BAD_REQUEST)
-            .json(
-               new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, {
-                  key: "roomId",
-                  message: "Room not exist",
-               })
-            );
+         return res.status(HttpStatus.BAD_REQUEST).json(
+            new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, {
+               key: "roomId",
+               message: "Room not exist",
+            })
+         );
       }
       const updatedRequest = await requestService.updateRequestById(
          req.params.id,
@@ -133,14 +123,12 @@ const updateRequestStatus = async (req, res) => {
          req.params.id
       );
       if (!isRequestExisted) {
-         return res
-            .status(HttpStatus.BAD_REQUEST)
-            .json(
-               new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, {
-                  key: "id",
-                  message: "Request not exist",
-               })
-            );
+         return res.status(HttpStatus.BAD_REQUEST).json(
+            new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, {
+               key: "id",
+               message: "Request not exist",
+            })
+         );
       }
       if (isRequestExisted.status !== RequestStatus.PENDING) {
          return res
@@ -158,7 +146,9 @@ const updateRequestStatus = async (req, res) => {
       );
       if (req.body.status === RequestStatus.ACCEPTED) {
          const room = await roomService.getRoomById(isRequestExisted.roomId);
-         const roomCategory = await roomCategoryService.getRoomCategoryById(room.roomCategoryId);
+         const roomCategory = await roomCategoryService.getRoomCategoryById(
+            room.roomCategoryId
+         );
          const newContract = await contractService.insertContract({
             studentId: isRequestExisted.studentId,
             roomId: isRequestExisted.roomId,
@@ -190,24 +180,20 @@ const deleteRequest = async (req, res) => {
          req.params.id
       );
       if (!isRequestExisted) {
-         return res
-            .status(HttpStatus.BAD_REQUEST)
-            .json(
-               new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, {
-                  key: "id",
-                  message: "Request not exist",
-               })
-            );
+         return res.status(HttpStatus.BAD_REQUEST).json(
+            new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, {
+               key: "id",
+               message: "Request not exist",
+            })
+         );
       }
       if (isRequestExisted.status !== RequestStatus.PENDING) {
-         return res
-            .status(HttpStatus.FORBIDDEN)
-            .json(
-               new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, {
-                  key: "id",
-                  message: "Cannot delete request after reject or accept",
-               })
-            );
+         return res.status(HttpStatus.FORBIDDEN).json(
+            new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, {
+               key: "id",
+               message: "Cannot delete request after reject or accept",
+            })
+         );
       }
       await requestService.softDeleteRequestById(req.params.id);
       return res

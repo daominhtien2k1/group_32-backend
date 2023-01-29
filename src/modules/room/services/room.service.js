@@ -3,14 +3,14 @@ import { softDeleteCondition } from "../../../constant.js";
 import Sequelize from "sequelize";
 const Op = Sequelize.Op;
 const Building = db.building;
+const RoomCategory = db.roomCategory;
 const Room = db.room;
 
 const buildingAttribute = [
    "id",
    "name",
    "buildingId",
-   "capacity",
-   "price",
+   "roomCategoryId",
    "createdAt",
    "updatedAt",
    "deletedAt",
@@ -25,7 +25,6 @@ const buildingAttribute = [
 const createRoom = async (buildingId, createRoomBody) => {
    try {
       createRoomBody.buildingId = buildingId;
-      let newRoom = {};
       return await Room.create({
          ...createRoomBody,
       });
@@ -45,6 +44,12 @@ const getRoomById = async (roomId) => {
          where: {
             id: roomId,
          },
+         include: [
+            {
+               model: db.roomCategory,
+               attributes: ["name", "description", "capacity", "priceRoom"],
+            },
+         ],
       });
    } catch (error) {
       throw error;
@@ -57,6 +62,12 @@ const getAllRoomsByBuildingId = async (buildingId) => {
          where: {
             buildingId,
          },
+         include: [
+            {
+               model: db.roomCategory,
+               attributes: ["name", "description", "capacity", "priceRoom"],
+            },
+         ],
       });
    } catch (error) {
       throw error;
@@ -146,8 +157,20 @@ const getListRoom = async (query) => {
       //    order: [["createdAt", "DESC"]],
       //    where: dbQuery,
       // });
-      const data = await Room.findAndCountAll();
+      // const data = await Room.findAndCountAll();
 
+      const data = await Room.findAndCountAll({
+         // limit: +limit || 1,
+         // offset: +limit * (+page - 1),
+         order: [["createdAt", "DESC"]],
+         where: dbQuery,
+         include: [
+            {
+               model: db.roomCategory,
+               attributes: ["name", "description", "capacity", "priceRoom"],
+            },
+         ],
+      });
       return { items: data.rows, totalItems: data.count };
    } catch (error) {
       throw error;
