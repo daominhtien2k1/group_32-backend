@@ -1,5 +1,6 @@
 import contractService from "./services/contract.service.js";
-import { HttpStatus, UserRole } from "../../constant.js";
+import userService from "../user/services/user.service.js";
+import { ContractStatus, HttpStatus, UserRole } from "../../constant.js";
 import ErrorResponse from "../../utils/ErrorResponse.js";
 import SuccessResponse from "../../utils/SuccessResponse.js";
 const updateContract = async (req, res) => {
@@ -24,10 +25,12 @@ const updateContractStatus = async (req, res) => {
     try {
         const status = req.body.status;
         const contractId = req.params.id;
-        const contract = await contractService.getContractById(contractId);
-
+        const contract = await contractService.getContractById(contractId)
         const updatedContract = await contractService.updateContractById(contractId,
-            { ...contract, status })
+            { status })
+        if (status === ContractStatus.INUSE && contract.status === ContractStatus.PENDING) {
+            await userService.updateUserById(contract.studentId, { roomId: contract.roomId })
+        }
         return res
             .status(HttpStatus.OK)
             .json(new SuccessResponse(updatedContract));
@@ -42,7 +45,6 @@ const updateContractStatus = async (req, res) => {
 
 const getContractList = async (req, res) => {
     try {
-        console.log(req.user.role);
         if (req.user.role == UserRole.STUDENT) {
             const contractList = await contractService.getContractListByStudentId(
                 req.user.id
@@ -67,6 +69,14 @@ const getContractList = async (req, res) => {
 
 const deleteContract = async (req, res) => {
     try {
+        const contract = await contractService.getContractById(req.params.id);
+        if ([ContractStatus.INUSE, ContractStatus.PENDING].includes(contract.status)) {
+            return res
+                .status(HttpStatus.BAD_REQUEST)
+                .json(
+                    new ErrorResponse(HttpStatus.FORBIDDEN, "Contract is current in use")
+                );
+        }
         await contractService.deleteContractById(req.params.id);
         return res
             .status(HttpStatus.OK)

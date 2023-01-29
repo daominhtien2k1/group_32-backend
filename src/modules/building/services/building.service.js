@@ -89,32 +89,33 @@ const softDeleteBuildingById = async (id) => {
 };
 const getBuildingList = async (query) => {
    try {
-      const { page = 1, limit = 10, keyword = "" } = query;
-      let dbQuery = {};
-      if (keyword) {
-         dbQuery = {
-            ...dbQuery,
-            [Op.or]: [
-               {
-                  name: {
-                     [Op.like]: `%${keyword}%`,
-                  },
-               },
-               {
-                  address: {
-                     [Op.like]: `%${keyword}%`,
-                  },
-               },
-            ],
-         };
-      }
+      // const { page = 1, limit = 10, keyword = "" } = query;
+      // let dbQuery = {};
+      // if (keyword) {
+      //    dbQuery = {
+      //       ...dbQuery,
+      //       [Op.or]: [
+      //          {
+      //             name: {
+      //                [Op.like]: `%${keyword}%`,
+      //             },
+      //          },
+      //          {
+      //             address: {
+      //                [Op.like]: `%${keyword}%`,
+      //             },
+      //          },
+      //       ],
+      //    };
+      // }
 
-      const data = await Building.findAndCountAll({
-         limit: +limit || 1,
-         offset: +limit * (+page - 1),
-         order: [["createdAt", "DESC"]],
-         where: dbQuery,
-      });
+      // const data = await Building.findAndCountAll({
+      //    limit: +limit || 1,
+      //    offset: +limit * (+page - 1),
+      //    order: [["createdAt", "DESC"]],
+      //    where: dbQuery,
+      // });
+      const data = await Building.findAndCountAll();
       return { items: data.rows, totalItems: data.count };
    } catch (error) {
       throw error;

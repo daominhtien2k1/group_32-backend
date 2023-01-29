@@ -10,7 +10,7 @@
     "seedDB": "npx sequelize-cli db:seed:all --config=config/config.cjs",
     "dropDB": "npx sequelize-cli db:drop --config=config/config.cjs",
     "migrateUndoDB": "npx sequelize-cli db:migrate:undo --config=config/config.cjs",
-    "migrateUndoAllDB":"npx sequelize-cli db:migrate:undo:all --config=config/config.cjs"
+    "migrateUndoAllDB": "npx sequelize-cli db:migrate:undo:all --config=config/config.cjs"
   },
   "author": "",
   "type": "module",
@@ -25,6 +25,7 @@
     "moment": "^2.29.4",
     "morgan": "^1.10.0",
     "mysql2": "^2.3.3",
+    "node-cron": "^3.0.2",
     "sequelize": "^6.25.3"
   },
   "devDependencies": {

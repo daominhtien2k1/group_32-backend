@@ -20,15 +20,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false,
          },
-         status: {
-            type: DataTypes.STRING,
-            allowNull: false,
-         },
          roomId: {
             type: DataTypes.INTEGER,
             allowNull: false,
          },
-         price: {
+         priceRoom: {
             type: DataTypes.INTEGER,
             allowNull: false,
          },
