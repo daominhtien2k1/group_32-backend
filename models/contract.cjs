@@ -4,6 +4,14 @@ module.exports = (sequelize, DataTypes) => {
    const Contract = sequelize.define(
       "Contract",
       {
+         startDate: {
+            type: DataTypes.DATE,
+            allowNull: false,
+         },
+         endDate: {
+            type: DataTypes.DATE,
+            allowNull: false,
+         },
          studentId: {
             type: DataTypes.INTEGER,
             allowNull: false,

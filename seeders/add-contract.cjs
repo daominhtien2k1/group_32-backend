@@ -7,6 +7,8 @@ module.exports = {
          "Contracts",
          [
             {
+               startDate: "2022-10-01 03:20:00",
+               endDate: "2023-10-01 03:20:00",
                studentId: 2,
                roomId: 1,
                status: "inuse",
@@ -19,6 +21,8 @@ module.exports = {
                updatedAt: new Date(),
             },
             {
+               startDate: "2022-10-01 03:20:00",
+               endDate: "2023-10-01 03:20:00",
                studentId: 3,
                roomId: 2,
                status: "inuse",

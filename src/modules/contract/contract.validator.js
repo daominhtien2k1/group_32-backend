@@ -7,6 +7,8 @@ const updateContract = {
         priceElectric: Joi.number().positive().required(),
         priceWater: Joi.number().positive().required(),
         priceParking: Joi.number().positive(),
+        startDate: Joi.date().required(),
+        endDate: Joi.date().required(),
     }),
     params: Joi.object({
         id: Joi.number().positive().required()
