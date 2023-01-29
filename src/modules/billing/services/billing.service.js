@@ -47,10 +47,36 @@ const bulkCreateBilling = async (bulkCreateBody) => {
         throw error;
     }
 }
+
+const updateBillingById = async (id, updateBody) => {
+    try {
+        await Billing.update(updateBody, {
+            where: {
+                id,
+            },
+        });
+        return await getBillingById(id)
+    } catch (error) {
+        throw error;
+    }
+};
+const deleteBilling = async (id) => {
+    try {
+        return await Billing.destroy({
+            where: {
+                id,
+            },
+        });
+    } catch (error) {
+        throw error;
+    }
+}
 export default {
     insertBilling,
     getBillingById,
     getBillingListByStudentId,
     getBillingList,
-    bulkCreateBilling
+    bulkCreateBilling,
+    deleteBilling,
+    updateBillingById
 }
