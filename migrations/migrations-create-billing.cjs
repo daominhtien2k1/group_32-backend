@@ -24,15 +24,11 @@ module.exports = {
             type: Sequelize.INTEGER,
             allowNull: false,
          },
-         status: {
-            type: Sequelize.STRING,
-            allowNull: false,
-         },
          roomId: {
             type: Sequelize.INTEGER,
             allowNull: false,
          },
-         price: {
+         priceRoom: {
             type: Sequelize.INTEGER,
             allowNull: false,
          },

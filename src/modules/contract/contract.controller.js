@@ -1,4 +1,5 @@
 import contractService from "./services/contract.service.js";
+import userService from "../user/services/user.service.js";
 import { ContractStatus, HttpStatus, UserRole } from "../../constant.js";
 import ErrorResponse from "../../utils/ErrorResponse.js";
 import SuccessResponse from "../../utils/SuccessResponse.js";
@@ -24,8 +25,12 @@ const updateContractStatus = async (req, res) => {
     try {
         const status = req.body.status;
         const contractId = req.params.id;
+        const contract = await contractService.getContractById(contractId)
         const updatedContract = await contractService.updateContractById(contractId,
             { status })
+        if (status === ContractStatus.INUSE && contract.status === ContractStatus.PENDING) {
+            await userService.updateUserById(contract.studentId, { roomId: contract.roomId })
+        }
         return res
             .status(HttpStatus.OK)
             .json(new SuccessResponse(updatedContract));
