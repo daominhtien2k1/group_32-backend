@@ -16,15 +16,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false,
          },
-         pricePerOneMonth: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-         },
-         pricePerThreeMonth: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-         },
-         pricePerSixMonth: {
+         priceRoom: {
             type: DataTypes.INTEGER,
             allowNull: false,
          },

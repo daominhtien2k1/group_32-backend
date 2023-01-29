@@ -20,7 +20,7 @@ module.exports = {
             type: Sequelize.INTEGER,
             allowNull: false,
          },
-         price: {
+         priceRoom: {
             type: Sequelize.INTEGER,
             allowNull: false,
          },
