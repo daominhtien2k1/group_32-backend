@@ -104,13 +104,13 @@ const getUserList = async (query) => {
       // })
       // return { items: data.rows, totalItems: data.count }
       const data = await User.findAndCountAll({
-         attributes: { exclude: ['password'] },
-      })
-      return { items: data.rows, totalItems: data.count }
+         attributes: { exclude: ["password"] },
+      });
+      return { items: data.rows, totalItems: data.count };
    } catch (error) {
       throw error;
    }
-}
+};
 
 const updateUserById = async (id, updateBody) => {
    try {
@@ -123,7 +123,6 @@ const updateUserById = async (id, updateBody) => {
       throw error;
    }
 };
-
 
 const softDeleteUserById = async (id) => {
    try {
@@ -141,13 +140,13 @@ const getUserByRoomId = async (roomId) => {
    try {
       return await User.findAll({
          where: {
-            roomId
-         }
-      })
+            roomId,
+         },
+      });
    } catch (error) {
-      throw error
+      throw error;
    }
-}
+};
 export default {
    createUser,
    getUserById,
@@ -155,5 +154,5 @@ export default {
    updateUserById,
    getUserList,
    softDeleteUserById,
-   getUserByRoomId
+   getUserByRoomId,
 };
