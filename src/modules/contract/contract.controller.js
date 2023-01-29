@@ -31,6 +31,9 @@ const updateContractStatus = async (req, res) => {
         if (status === ContractStatus.INUSE && contract.status === ContractStatus.PENDING) {
             await userService.updateUserById(contract.studentId, { roomId: contract.roomId })
         }
+        if (status === ContractStatus.CANCELED && contract.status === ContractStatus.INUSE) {
+            await userService.updateUserById(contract.studentId, { roomId: null })
+        }
         return res
             .status(HttpStatus.OK)
             .json(new SuccessResponse(updatedContract));
