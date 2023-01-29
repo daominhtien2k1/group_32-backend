@@ -20,11 +20,12 @@ const insertContract = async (insertContractBody) => {
 
 const updateContractById = async (id, updateBody) => {
     try {
-        return await Contract.update(updateBody, {
+        await Contract.update(updateBody, {
             where: {
                 id,
             },
         });
+        return await getContractById(id)
     } catch (error) {
         throw error;
     }
