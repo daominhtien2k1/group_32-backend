@@ -33,7 +33,7 @@ const getRoomCategoryById = async (req, res, next) => {
 
 const createRoomCategory = async (req, res, next) => {
    try {
-      const roomCategory = await roomCategoryService.getRoomCategoryById(
+      const roomCategory = await roomCategoryService.createRoomCategory(
          req.body
       );
       if (roomCategory) {
@@ -68,7 +68,7 @@ const updateRoomCategoryById = async (req, res, next) => {
             req.params.roomCategoryId,
             req.body
          );
-         if (rowAffect > 1) {
+         if (rowAffect) {
             return res
                .status(HttpStatus.OK)
                .json(new SuccessResponse(req.params.roomCategoryId));
@@ -122,7 +122,7 @@ const deleteRoomCategoryById = async (req, res, next) => {
          const rowAffect = await roomCategoryService.deleteRoomCategoryById(
             req.params.roomCategoryId
          );
-         if (rowAffect > 1) {
+         if (rowAffect) {
             return res
                .status(HttpStatus.OK)
                .json(new SuccessResponse(req.params.roomCategoryId));

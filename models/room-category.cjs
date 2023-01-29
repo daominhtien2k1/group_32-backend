@@ -29,9 +29,9 @@ module.exports = (sequelize, DataTypes) => {
    );
    RoomCategory.associate = function (models) {
       // associations can be defined here
-      RoomCategory.hasMany(models.Room, {
-         as: "rooms",
+      RoomCategory.hasMany(models.room, {
          foreignKey: "roomCategoryId",
+         sourceKey: "id",
       });
    };
    return RoomCategory;

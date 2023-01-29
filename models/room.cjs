@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
          roomCategoryId: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            references: {
+               model: "RoomCategory",
+               key: "id",
+            },
          },
       },
       {
@@ -25,8 +29,7 @@ module.exports = (sequelize, DataTypes) => {
    );
    Room.associate = function (models) {
       // associations can be defined here
-      Room.belongsTo(models.RoomCategory, {
-         as: "roomCategory",
+      Room.belongsTo(models.roomCategory, {
          foreignKey: "roomCategoryId",
          targetKey: "id",
       });

@@ -47,6 +47,7 @@ const getRoomById = async (roomId) => {
          include: [
             {
                model: db.roomCategory,
+               attributes: ["name", "description", "capacity", "priceRoom"],
             },
          ],
       });

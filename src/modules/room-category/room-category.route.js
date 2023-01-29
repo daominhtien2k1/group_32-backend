@@ -15,7 +15,7 @@ router.get(
    roomCategoryController.getRoomCategoryById
 );
 router.post(
-   "/:roomCategoryId",
+   "/",
    auth,
    checkUserRole(UserRole.ADMIN),
    validate(roomCategoryValidator.createRoomCategory),

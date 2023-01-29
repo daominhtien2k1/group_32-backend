@@ -4,9 +4,11 @@ import Joi from "joi";
 // "capacity",
 // "price",
 const create = {
+   params: Joi.object({
+      buildingId: Joi.number().integer().required(),
+   }),
    body: Joi.object({
       name: Joi.string().trim().required(),
-      buildingId: Joi.number().integer().required(),
       roomCategoryId: Joi.number().integer().required(),
    }),
 };

@@ -35,12 +35,6 @@ fs.readdirSync(__dirname)
       db[model.name] = model;
    });
 
-Object.keys(db).forEach((modelName) => {
-   if (db[modelName].associate) {
-      db[modelName].associate(db);
-   }
-});
-
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 db.billing = require("./billing.cjs")(sequelize, Sequelize);
@@ -52,4 +46,9 @@ db.roomCategory = require("./room-category.cjs")(sequelize, Sequelize);
 db.room = require("./room.cjs")(sequelize, Sequelize);
 db.token = require("./token.cjs")(sequelize, Sequelize);
 db.user = require("./user.cjs")(sequelize, Sequelize);
+Object.keys(db).forEach((modelName) => {
+   if (db[modelName].associate) {
+      db[modelName].associate(db);
+   }
+});
 module.exports = db;

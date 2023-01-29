@@ -6,9 +6,6 @@ const getRoomCategoryById = {
    }),
 };
 const createRoomCategory = {
-   params: Joi.object({
-      roomCategoryId: Joi.number().positive().required(),
-   }),
    body: Joi.object({
       name: Joi.string().trim().required(),
       description: Joi.string().trim().required(),

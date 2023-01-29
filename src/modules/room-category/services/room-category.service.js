@@ -25,13 +25,7 @@ const createRoomCategory = async (createBody) => {
 // tra ve tat ca room category
 const getListRoomCategory = async () => {
    try {
-      return await RoomCategory.findAll({
-         include: [
-            {
-               model: db.room,
-            },
-         ],
-      });
+      return await RoomCategory.findAll({});
    } catch (error) {
       throw error;
    }
