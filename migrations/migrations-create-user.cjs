@@ -49,7 +49,7 @@ module.exports = {
          },
          faculty: {
             // viện trường
-            type: Sequelize.INTEGER,
+            type: Sequelize.STRING,
          },
          majors: {
             // chuyên ngành

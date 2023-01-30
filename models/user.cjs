@@ -57,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
          },
          faculty: {
             // viện trường
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
          },
          majors: {
             // chuyên ngành
