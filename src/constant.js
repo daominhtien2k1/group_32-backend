@@ -64,9 +64,3 @@ export const ComplainLevel = {
    LOW: "low",
    HIGH: "high",
 };
-export const Faculty = {
-   informationAndCommunicationsTechnology: 1,
-   electronic: 2,
-   foreginLanguage: 3,
-   economy: 4,
-};

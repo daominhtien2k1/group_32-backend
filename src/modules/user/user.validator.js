@@ -3,7 +3,6 @@ import {
    MIN_PASSWORD_CHARACTER,
    UserRole,
    UserStatus,
-   Faculty,
 } from "../../constant.js";
 
 const updateProfile = {
@@ -31,9 +30,7 @@ const createUser = {
       ethnic: Joi.string().trim().optional(),
       religion: Joi.string().trim().optional(),
       gender: Joi.string().trim().optional(),
-      faculty: Joi.number()
-         .valid(...Object.values(Faculty))
-         .optional(),
+      faculty: Joi.string().trim().optional(),
       majors: Joi.string().trim().optional(),
    }),
 };
@@ -62,9 +59,7 @@ const updateUser = {
       ethnic: Joi.string().trim().optional(),
       religion: Joi.string().trim().optional(),
       gender: Joi.string().trim().optional(),
-      faculty: Joi.number()
-         .valid(...Object.values(Faculty))
-         .optional(),
+      faculty: Joi.string().trim().optional(),
       majors: Joi.string().trim().optional(),
    }),
 };
