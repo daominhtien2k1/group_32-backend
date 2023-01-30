@@ -46,7 +46,7 @@ const getRequestListByStudentId = async (studentId) => {
             {
                model: db.room,
                attributes: ["name", "buildingId"],
-               as: "room",
+
                include: [
                   {
                      model: db.building,

@@ -41,7 +41,6 @@ module.exports = (sequelize, DataTypes) => {
       Request.belongsTo(models.room, {
          foreignKey: "roomId",
          targetKey: "id",
-         as: "room",
       });
       Request.belongsTo(models.user, {
          foreignKey: "studentId",
