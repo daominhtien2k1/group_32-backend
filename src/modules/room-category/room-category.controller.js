@@ -69,19 +69,22 @@ const updateRoomCategoryById = async (req, res, next) => {
             req.body
          );
          if (rowAffect) {
+            const roomCategoryUpdate =
+               await roomCategoryService.getRoomCategoryById(
+                  req.params.roomCategoryId
+               );
             return res
                .status(HttpStatus.OK)
-               .json(new SuccessResponse(req.params.roomCategoryId));
-         } else {
-            return res
-               .status(HttpStatus.NOT_FOUND)
-               .json(
-                  new ErrorResponse(
-                     HttpStatus.BAD_REQUEST,
-                     "update room category failed"
-                  )
-               );
+               .json(new SuccessResponse(roomCategoryUpdate));
          }
+         return res
+            .status(HttpStatus.NOT_FOUND)
+            .json(
+               new ErrorResponse(
+                  HttpStatus.BAD_REQUEST,
+                  "update room category failed"
+               )
+            );
       }
       return res
          .status(HttpStatus.NOT_FOUND)

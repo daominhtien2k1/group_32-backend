@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
          studentId: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            references: {
+               model: "Student",
+               key: "id",
+            },
          },
          status: {
             type: DataTypes.STRING,
@@ -23,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
          roomId: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            references: {
+               model: "Room",
+               key: "id",
+            },
          },
          priceRoom: {
             type: DataTypes.INTEGER,
@@ -43,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
          priceParking: {
             type: DataTypes.INTEGER,
             allowNull: true,
-         }
+         },
       },
       {
          deletedAt: "deletedAt",
@@ -53,6 +61,14 @@ module.exports = (sequelize, DataTypes) => {
    );
    Contract.associate = function (models) {
       // associations can be defined here
+      Contract.belongsTo(models.room, {
+         foreignKey: "roomId",
+         targetKey: "id",
+      });
+      Contract.belongsTo(models.user, {
+         foreignKey: "studentId",
+         targetKey: "id",
+      });
    };
    return Contract;
 };

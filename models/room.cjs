@@ -49,6 +49,10 @@ module.exports = (sequelize, DataTypes) => {
          foreignKey: "roomId",
          sourceKey: "id",
       });
+      Room.hasMany(models.contract, {
+         foreignKey: "roomId",
+         sourceKey: "id",
+      });
    };
    return Room;
 };
