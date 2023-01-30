@@ -193,28 +193,24 @@ const getUserByRoomId = async (req, res) => {
    try {
       const isRoomExisted = await roomService.getRoomById(req.params.roomId);
       if (!isRoomExisted) {
-         return res
-            .status(HttpStatus.BAD_REQUEST)
-            .json(
-               new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, {
-                  key: "roomId",
-                  message: "Room not exist",
-               })
-            );
+         return res.status(HttpStatus.BAD_REQUEST).json(
+            new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, {
+               key: "roomId",
+               message: "Room not exist",
+            })
+         );
       }
       let userList = await userService.getUserByRoomId(req.params.roomId);
       userList = userList.map((user) => {
          delete user.dataValues.password;
          return user;
       });
-      return res
-         .status(HttpStatus.OK)
-         .json(
-            new SuccessResponse({
-               items: userList,
-               totalItems: userList.length,
-            })
-         );
+      return res.status(HttpStatus.OK).json(
+         new SuccessResponse({
+            items: userList,
+            totalItems: userList.length,
+         })
+      );
    } catch (error) {
       return res
          .status(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -45,11 +45,11 @@ export const RequestStatus = {
 };
 export const ContractStatus = {
    PENDING: "pending",
-   INUSE: 'inuse',
-   CANCELED: 'canceled',
-   REJECTED: 'rejected',
-   END: 'end',
-}
+   INUSE: "inuse",
+   CANCELED: "canceled",
+   REJECTED: "rejected",
+   END: "end",
+};
 export const softDeleteCondition = {
    deletedAt: {
       [Op.ne]: null,

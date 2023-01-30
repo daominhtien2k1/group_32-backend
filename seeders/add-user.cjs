@@ -1,7 +1,6 @@
 "use strict";
 
 const { hashString } = require("../src/middlewares/bcrypt.cjs");
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
    up: async (queryInterface) =>
@@ -25,6 +24,13 @@ module.exports = {
                studentCode: "20194385",
                roomId: 1,
                status: "active",
+               generation: "K64",
+               phoneNumber: "03455665434",
+               ethnic: "Kinh",
+               religion: "không",
+               gender: "nam",
+               faculty: "CNTT & TT",
+               majors: "IT2-03",
                createdAt: new Date(),
                updatedAt: new Date(),
             },
@@ -36,6 +42,13 @@ module.exports = {
                studentCode: "20194386",
                roomId: 2,
                status: "active",
+               generation: "K64",
+               phoneNumber: "423574354423",
+               ethnic: "Kinh",
+               religion: "không",
+               gender: "nam",
+               faculty: "CNTT & TT",
+               majors: "IT2-04",
                createdAt: new Date(),
                updatedAt: new Date(),
             },
@@ -46,6 +59,13 @@ module.exports = {
                role: "student",
                studentCode: "20194384",
                status: "active",
+               generation: "K64",
+               phoneNumber: "03455665434",
+               ethnic: "Kinh",
+               religion: "không",
+               gender: "nam",
+               faculty: "CNTT & TT",
+               majors: "IT2-03",
                createdAt: new Date(),
                updatedAt: new Date(),
             },
@@ -56,6 +76,13 @@ module.exports = {
                role: "student",
                studentCode: "20194380",
                status: "active",
+               generation: "K64",
+               phoneNumber: "03455665434",
+               ethnic: "Kinh",
+               religion: "không",
+               gender: "nữ",
+               faculty: "CNTT & TT",
+               majors: "IT2-03",
                createdAt: new Date(),
                updatedAt: new Date(),
             },

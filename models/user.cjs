@@ -38,6 +38,31 @@ module.exports = (sequelize, DataTypes) => {
                key: "id",
             },
          },
+         generation: {
+            type: DataTypes.STRING,
+         },
+         phoneNumber: {
+            type: DataTypes.STRING,
+         },
+         ethnic: {
+            // dân tộc
+            type: DataTypes.STRING,
+         },
+         religion: {
+            // tôn giáo
+            type: DataTypes.STRING,
+         },
+         gender: {
+            type: DataTypes.STRING,
+         },
+         faculty: {
+            // viện trường
+            type: DataTypes.STRING,
+         },
+         majors: {
+            // chuyên ngành
+            type: DataTypes.STRING,
+         },
       },
       {
          hooks: {
