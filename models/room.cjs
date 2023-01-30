@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
          buildingId: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            references: {
+               model: "Building",
+               key: "id",
+            },
          },
          roomCategoryId: {
             type: DataTypes.INTEGER,
@@ -32,6 +36,18 @@ module.exports = (sequelize, DataTypes) => {
       Room.belongsTo(models.roomCategory, {
          foreignKey: "roomCategoryId",
          targetKey: "id",
+      });
+      Room.belongsTo(models.building, {
+         foreignKey: "buildingId",
+         targetKey: "id",
+      });
+      Room.hasMany(models.request, {
+         foreignKey: "roomId",
+         sourceKey: "id",
+      });
+      Room.hasMany(models.user, {
+         foreignKey: "roomId",
+         sourceKey: "id",
       });
    };
    return Room;

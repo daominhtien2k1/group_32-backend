@@ -9,6 +9,16 @@ const getRequestById = async (id) => {
             id,
             deletedAt: null,
          },
+         include: [
+            {
+               model: db.user,
+               attributes: ["name", "studentCode"],
+            },
+            {
+               model: db.room,
+               attributes: ["name"],
+            },
+         ],
       });
    } catch (error) {
       throw error;
@@ -22,6 +32,16 @@ const getRequestListByStudentId = async (studentId) => {
             studentId,
             deletedAt: null,
          },
+         include: [
+            {
+               model: db.user,
+               attributes: ["name", "studentCode"],
+            },
+            {
+               model: db.room,
+               attributes: ["name"],
+            },
+         ],
       });
       const totalItems = await Request.count({
          where: {
@@ -37,17 +57,19 @@ const getRequestListByStudentId = async (studentId) => {
 
 const getAllRequestList = async () => {
    try {
-      const requestList = await Request.findAll({
-         where: {
-            deletedAt: null,
-         },
+      const data = await Request.findAndCountAll({
+         include: [
+            {
+               model: db.user,
+               attributes: ["name", "studentCode"],
+            },
+            {
+               model: db.room,
+               attributes: ["name"],
+            },
+         ],
       });
-      const totalItems = await Request.count({
-         where: {
-            deletedAt: null,
-         },
-      });
-      return { items: requestList, totalItems };
+      return { items: data.rows, totalItems: data.count };
    } catch (error) {
       throw error;
    }

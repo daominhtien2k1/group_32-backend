@@ -49,6 +49,14 @@ const getRoomById = async (roomId) => {
                model: db.roomCategory,
                attributes: ["name", "description", "capacity", "priceRoom"],
             },
+            {
+               model: db.user,
+               attributes: ["name", "studentCode"],
+            },
+            {
+               model: db.building,
+               attributes: ["name", "address"],
+            },
          ],
       });
    } catch (error) {
@@ -65,6 +73,10 @@ const getAllRoomsByBuildingId = async (buildingId) => {
             {
                model: db.roomCategory,
                attributes: ["name", "description", "capacity", "priceRoom"],
+            },
+            {
+               model: db.building,
+               attributes: ["name", "address"],
             },
          ],
       });
@@ -168,6 +180,10 @@ const getListRoom = async (query) => {
             {
                model: db.roomCategory,
                attributes: ["name", "description", "capacity", "priceRoom"],
+            },
+            {
+               model: db.building,
+               attributes: ["name", "address"],
             },
          ],
       });
