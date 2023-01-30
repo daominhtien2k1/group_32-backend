@@ -45,11 +45,11 @@ export const RequestStatus = {
 };
 export const ContractStatus = {
    PENDING: "pending",
-   INUSE: 'inuse',
-   CANCELED: 'canceled',
-   REJECTED: 'rejected',
-   END: 'end',
-}
+   INUSE: "inuse",
+   CANCELED: "canceled",
+   REJECTED: "rejected",
+   END: "end",
+};
 export const softDeleteCondition = {
    deletedAt: {
       [Op.ne]: null,
@@ -63,4 +63,10 @@ export const ComplainType = {
 export const ComplainLevel = {
    LOW: "low",
    HIGH: "high",
+};
+export const Faculty = {
+   informationAndCommunicationsTechnology: 1,
+   electronic: 2,
+   foreginLanguage: 3,
+   economy: 4,
 };
