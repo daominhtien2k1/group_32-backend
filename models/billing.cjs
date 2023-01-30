@@ -19,10 +19,18 @@ module.exports = (sequelize, DataTypes) => {
          studentId: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            references: {
+               model: "Student",
+               key: "id",
+            },
          },
          roomId: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            references: {
+               model: "Room",
+               key: "id",
+            },
          },
          priceRoom: {
             type: DataTypes.INTEGER,
@@ -43,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
          priceParking: {
             type: DataTypes.INTEGER,
             allowNull: true,
-         }
+         },
       },
       {
          deletedAt: "deletedAt",
@@ -53,6 +61,14 @@ module.exports = (sequelize, DataTypes) => {
    );
    Billing.associate = function (models) {
       // associations can be defined here
+      Billing.belongsTo(models.room, {
+         foreignKey: "roomId",
+         targetKey: "id",
+      });
+      Billing.belongsTo(models.user, {
+         foreignKey: "studentId",
+         targetKey: "id",
+      });
    };
    return Billing;
 };
