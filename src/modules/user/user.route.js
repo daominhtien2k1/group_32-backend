@@ -26,7 +26,7 @@ router.get(
    "/user",
    auth,
    checkUserRole([UserRole.ADMIN]),
-   //validate(userValidator.getUserList),
+   validate(userValidator.getUserList),
    userController.getUserList
 );
 // router.get("/user/:id",
