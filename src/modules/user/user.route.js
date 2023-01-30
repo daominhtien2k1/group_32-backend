@@ -74,7 +74,7 @@ router.get(
    checkUserRole([UserRole.STUDENT, UserRole.ADMIN]),
    userController.getProfile
 );
-router.put(
+router.patch(
    "/profile",
    auth,
    checkUserRole([UserRole.STUDENT, UserRole.ADMIN]),
