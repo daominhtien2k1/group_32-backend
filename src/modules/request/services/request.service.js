@@ -16,7 +16,13 @@ const getRequestById = async (id) => {
             },
             {
                model: db.room,
-               attributes: ["name"],
+               attributes: ["name", "buildingId"],
+               include: [
+                  {
+                     model: db.building,
+                     attributes: ["name", "address"],
+                  },
+               ],
             },
          ],
       });
@@ -39,7 +45,13 @@ const getRequestListByStudentId = async (studentId) => {
             },
             {
                model: db.room,
-               attributes: ["name"],
+               attributes: ["name", "buildingId"],
+               include: [
+                  {
+                     model: db.building,
+                     attributes: ["name", "address"],
+                  },
+               ],
             },
          ],
       });
@@ -65,7 +77,13 @@ const getAllRequestList = async () => {
             },
             {
                model: db.room,
-               attributes: ["name"],
+               attributes: ["name", "buildingId"],
+               include: [
+                  {
+                     model: db.building,
+                     attributes: ["name", "address"],
+                  },
+               ],
             },
          ],
       });
