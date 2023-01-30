@@ -9,6 +9,13 @@ const updateProfile = {
    body: Joi.object({
       name: Joi.string().required().trim(),
       studentCode: Joi.string().required().trim(),
+      generation: Joi.string().required().trim(),
+      phoneNumber: Joi.string().trim().optional(),
+      ethnic: Joi.string().trim().optional(),
+      religion: Joi.string().trim().optional(),
+      gender: Joi.string().trim().optional(),
+      faculty: Joi.string().trim().optional(),
+      majors: Joi.string().trim().optional(),
    }),
 };
 
