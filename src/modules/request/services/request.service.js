@@ -141,7 +141,7 @@ const getListRequestPendingByRoomId = async (roomId) => {
          },
       });
 
-      return { items: data.rows, totalItems: data.count };
+      return data.count;
    } catch (error) {
       throw error;
    }
