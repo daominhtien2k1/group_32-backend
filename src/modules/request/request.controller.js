@@ -39,9 +39,11 @@ const createRequest = async (req, res) => {
       let userInRoomId = await userService.getUserByRoomId(
          req.body.roomId
       );
+      const room = await roomService.getRoomById(req.body.roomId);
       let capacityRoom =
-         (await roomService.getRoomById(req.body.roomId)?.RoomCategory
-            ?.capacity) ?? 0;
+         room?.RoomCategory
+            ?.capacity || 0;
+
       if (capacityRoom <= userInRoomId.length + numbersRequest) {
          return res
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
