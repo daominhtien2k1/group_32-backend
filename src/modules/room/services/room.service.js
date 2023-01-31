@@ -78,6 +78,10 @@ const getAllRoomsByBuildingId = async (buildingId) => {
                model: db.building,
                attributes: ["name", "address"],
             },
+            {
+               model: db.user,
+               attributes: ["name", "studentCode"],
+            },
          ],
       });
       return { items: data.rows, totalItems: data.count };
@@ -184,6 +188,10 @@ const getListRoom = async (query) => {
             {
                model: db.building,
                attributes: ["name", "address"],
+            },
+            {
+               model: db.user,
+               attributes: ["name", "studentCode"],
             },
          ],
       });
