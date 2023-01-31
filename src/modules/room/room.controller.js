@@ -4,6 +4,8 @@ import { getBuildingById } from "../building/services/building.service.js";
 import { getRoomCategoryById } from "../room-category/services/room-category.service.js";
 import ErrorResponse from "../../utils/ErrorResponse.js";
 import SuccessResponse from "../../utils/SuccessResponse.js";
+import requestService from "../request/services/request.service.js";
+import userService from "../user/services/user.service.js";
 
 /**
  * Trả về phòng theo id
@@ -193,7 +195,17 @@ const getAllRoomsByBuildingId = async (req, res, next) => {
 const getListRoom = async (req, res, next) => {
    try {
       const roomList = await roomService.getListRoom(req.query);
-      return res.status(HttpStatus.OK).json(new SuccessResponse(roomList));
+      const list = await Promise.all(roomList.items.map(async room => {
+         let numbersRequest = await requestService.getListRequestPendingByRoomId(
+            room.id
+         );
+         let numberUserByRoomId = await userService.getUserByRoomId(
+            room.id
+         );
+         room.numberOfStudentInuse = numbersRequest + numberUserByRoomId.length;
+         return room
+      }))
+      return res.status(HttpStatus.OK).json(new SuccessResponse({ items: list, totalItems: roomList.totalItems }));
    } catch (error) {
       return res
          .status(HttpStatus.INTERNAL_SERVER_ERROR)
