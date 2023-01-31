@@ -95,9 +95,8 @@ const getAllRoomsByBuildingId = async (buildingId) => {
  * @param {*} updateBody
  * @returns thông tin tòa nhà được cập nhật
  */
-const updateRoomById = async (buildingId, roomId, updateBody) => {
+const updateRoomById = async (roomId, updateBody) => {
    try {
-      updateBody.buildingId = buildingId;
       return await Room.update(
          { ...updateBody },
          {

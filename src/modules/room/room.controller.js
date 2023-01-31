@@ -68,8 +68,10 @@ const createRoom = async (req, res) => {
          req.params.buildingId,
          req.body
       );
-
-      return res.status(HttpStatus.OK).send(new SuccessResponse(newRoom.id));
+      if (newRoom) {
+         const room = await roomService.getRoomById(newRoom.id);
+         return res.status(HttpStatus.OK).send(new SuccessResponse(room));
+      }
    } catch (error) {
       return res
          .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -113,14 +115,14 @@ const updateRoom = async (req, res, next) => {
       const room = await roomService.getRoomById(req.params.roomId);
       if (room) {
          const rowAffect = await roomService.updateRoomById(
-            req.params.buildingId,
             req.params.roomId,
             req.body
          );
          if (rowAffect > 0) {
+            const roomUpdate = await roomService.getRoomById(req.params.roomId);
             return res
                .status(HttpStatus.OK)
-               .json(new SuccessResponse(req.params.roomId));
+               .json(new SuccessResponse(roomUpdate));
          }
          return res
             .status(HttpStatus.BAD_REQUEST)
@@ -195,17 +197,22 @@ const getAllRoomsByBuildingId = async (req, res, next) => {
 const getListRoom = async (req, res, next) => {
    try {
       const roomList = await roomService.getListRoom(req.query);
-      const list = await Promise.all(roomList.items.map(async room => {
-         let numbersRequest = await requestService.getListRequestPendingByRoomId(
-            room.id
-         );
-         let numberUserByRoomId = await userService.getUserByRoomId(
-            room.id
-         );
-         room.numberOfStudentInuse = numbersRequest + numberUserByRoomId.length;
-         return room
-      }))
-      return res.status(HttpStatus.OK).json(new SuccessResponse({ items: list, totalItems: roomList.totalItems }));
+      const list = await Promise.all(
+         roomList.items.map(async (room) => {
+            let numbersRequest =
+               await requestService.getListRequestPendingByRoomId(room.id);
+            let numberUserByRoomId = await userService.getUserByRoomId(room.id);
+            room.numberOfStudentInuse =
+               numbersRequest + numberUserByRoomId.length;
+            return room;
+         })
+      );
+      return res.status(HttpStatus.OK).json(
+         new SuccessResponse({
+            items: list,
+            totalItems: roomList.totalItems,
+         })
+      );
    } catch (error) {
       return res
          .status(HttpStatus.INTERNAL_SERVER_ERROR)
